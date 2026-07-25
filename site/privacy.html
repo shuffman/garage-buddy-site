@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Garage Buddy</title>
+<meta name="description" content="What Garage Buddy does and does not do with your data. No servers, no analytics, no account.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/">Garage Buddy</a>
+  <a href="/support">Support</a>
+  <a href="/privacy" aria-current="page">Privacy</a>
+</nav>
+
+<h1>Privacy Policy</h1>
+<p><em>Last updated: 2026-07-24</em></p>
+<p>Garage Buddy is a mileage and expense tracker for your vehicles. This policy explains what data the app handles and where it goes. <strong>Garage Buddy does not operate a server</strong> — your data lives on your device or in your own accounts.</p>
+<h2>Where your data lives — you choose</h2>
+<p>When you first open Garage Buddy you pick one of two storage modes, and you can switch between them later (taking your data with you, in either direction):</p>
+<ul>
+  <li><strong>On this device</strong> — everything stays on your iPhone, in the app&#x27;s own storage, included in your normal device backup. <strong>No account and no network connection are required</strong>, and nothing leaves the phone except the optional AI scanning described below.</li>
+  <li><strong>Google Drive</strong> — your data is kept in a spreadsheet and folder that the app creates in your own Drive, described below.</li>
+</ul>
+<p>The sections that follow describe Google Drive mode. In on-device mode, no Google account is involved and none of the Drive behaviour applies.</p>
+<h2>What data the app handles</h2>
+<ul>
+  <li><strong>Your car and transaction data</strong> (car details, odometer readings, dates, categories, costs, gallons, notes, reminders). In on-device mode this is stored locally on your iPhone. In Google Drive mode it is stored in a Google Sheet named <strong>&quot;Garage Buddy&quot;</strong> (older installs: &quot;Car Log Data&quot; — renamed automatically) that the app creates in <strong>your own Google Drive</strong>.</li>
+  <li><strong>Attachments and reference photos</strong> (receipts, documents, an optional dashboard photo per car) are stored as files in a <strong>&quot;Garage Buddy&quot;</strong> folder in your own Google Drive (older installs used &quot;Car Log Attachments&quot;). Reference photos are also cached on-device so scans don&#x27;t re-download them.</li>
+  <li><strong>Your Google account</strong>, used only to sign in and to create/read/write that spreadsheet and folder. The app requests the <strong><code>drive.file</code></strong> scope, which grants access <strong>only to files the app itself creates</strong> — it cannot see the rest of your Drive.</li>
+  <li><strong>Photos you choose to scan</strong> (odometer, fuel pump, or receipts). When you use the optional AI capture feature, the selected photo — plus any reference photos you added to your cars — is sent to <strong>the AI provider you configure</strong> (Anthropic, Google Gemini, or an OpenAI-compatible endpoint) using <strong>your own API key</strong>, solely to extract the mileage/amounts. The free on-device scanning mode processes photos entirely on your device and sends nothing. Photos are not stored by Garage Buddy beyond the attachments you explicitly save to your Drive.</li>
+  <li><strong>Your AI API key</strong>, stored locally in the device <strong>Keychain</strong>. It is sent only to the provider you configure and is never transmitted to anyone else.</li>
+  <li><strong>Home Screen widgets</strong> read a small summary (car count, recent miles/spend, upcoming reminders) that the app writes to a private App Group container <strong>on your device only</strong>; it never leaves the phone.</li>
+  <li><strong>Notifications</strong> for date-based reminders are scheduled locally on your device; no push server is involved.</li>
+</ul>
+<h2>What we do NOT do</h2>
+<ul>
+  <li>We do not run a backend and do not collect, store, or sell your data.</li>
+  <li>We do not use analytics or advertising SDKs.</li>
+  <li>We do not share your data with third parties other than the services you explicitly connect (Google for storage; your chosen AI provider for scanning).</li>
+</ul>
+<h2>Third-party services</h2>
+<ul>
+  <li><strong>Google Drive / Google Sheets</strong> — stores your data in your account, governed by <a href="https://policies.google.com/privacy">Google&#x27;s Privacy Policy</a>.</li>
+  <li><strong>Your AI provider</strong> (only if you enable AI photo capture) — Anthropic, Google (Gemini), or the OpenAI-compatible service you configure — governed by that provider&#x27;s own privacy policy.</li>
+</ul>
+<h2>Your control</h2>
+<ul>
+  <li>In <strong>on-device mode</strong>, your data is in the app. Deleting the app removes it; export a PDF report first if you want a copy. Settings → Data can move everything to Google Drive.</li>
+  <li>In <strong>Google Drive mode</strong>, your data is in your own Google Sheet and Drive folder; you can view, edit, export, or delete it directly at any time.</li>
+  <li>Disconnecting Google in <strong>Settings</strong> signs the app out and clears the widgets. Deleting the &quot;Garage Buddy&quot; folder (spreadsheet included) removes your data.</li>
+  <li>Removing your AI key in <strong>Settings → AI Photo Capture</strong> disables AI scanning (on-device scanning keeps working, offline).</li>
+</ul>
+<h2>Contact</h2>
+<p>Questions: shuffman@gmail.com</p>
+
+<footer>
+  <p>Garage Buddy &middot; <a href="/support">Support</a> &middot;
+  <a href="mailto:shuffman@gmail.com">shuffman@gmail.com</a></p>
+</footer>
+
+</body>
+</html>

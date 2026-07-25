@@ -1,0 +1,29 @@
+# Railway injects $PORT; Caddy terminates plain HTTP behind Railway's edge,
+# which handles TLS for the custom domain.
+{
+	admin off
+	auto_https off
+}
+
+:{$PORT:8080} {
+	root * /srv
+	encode gzip
+
+	# Clean URLs: /privacy -> privacy.html, /support -> support.html
+	try_files {path} {path}.html {path}/index.html
+
+	file_server
+
+	header {
+		# The privacy policy is a public legal document; nothing here is
+		# sensitive, but there's no reason to allow framing or sniffing.
+		X-Content-Type-Options nosniff
+		X-Frame-Options DENY
+		Referrer-Policy strict-origin-when-cross-origin
+		Cache-Control "public, max-age=300"
+	}
+
+	handle_errors {
+		respond "{err.status_code} {err.status_text}"
+	}
+}
