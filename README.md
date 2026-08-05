@@ -34,9 +34,18 @@ neither depends on the other.
 `.github/workflows/pages.yml` uploads `site/` on every push to `main`. TLS is
 GitHub's (Let's Encrypt), issued automatically for the custom domain.
 
-`site/CNAME` pins the domain. **Don't delete it** — GitHub rewrites the repo's
-Pages domain setting from this file on each deploy, so removing it unsets the
-custom domain.
+The custom domain (`garage-buddy.app`) lives in the **repo's Pages setting**,
+not in the repo contents:
+
+```sh
+gh api -X PUT repos/shuffman/garage-buddy-site/pages -f cname=garage-buddy.app
+```
+
+`site/CNAME` is kept as documentation and is **inert for Actions-based
+deploys** — verified 2026-08-05: three successful deploys with the file present
+left the Pages `cname` setting at `null` until it was set explicitly via the
+API. (The file *is* honoured by the legacy branch build, which is where the
+"just commit a CNAME" advice comes from.)
 
 Clean URLs work without configuration: Pages resolves `/privacy` to
 `privacy.html` on its own, so no `try_files` equivalent is needed.
