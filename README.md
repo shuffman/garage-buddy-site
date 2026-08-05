@@ -12,10 +12,38 @@ five-minute iOS build (and an app fix doesn't redeploy the website).
 | Path | File | Used for |
 |---|---|---|
 | `/` | `site/index.html` | Landing page |
+| `/release-notes` | `site/release-notes.html` | Version history — **generated**, don't hand-edit |
 | `/privacy` | `site/privacy.html` | **App Store "Privacy Policy URL"** (required) |
 | `/support` | `site/support.html` | **App Store "Support URL"** (required) |
+| `/terms` | `site/terms.html` | Terms of service |
 
 Both required URLs are checked by App Review, so they must stay reachable.
+
+## Release notes are generated — don't hand-edit
+
+`site/release-notes.html` is built from `CHANGELOG.md` in the **app** repo
+(`~/Projects/garage-buddy`), which is the source of truth. **Re-run after every
+release**, as part of the same commit that bumps the version:
+
+```sh
+python3 scripts/gen_release_notes.py            # reads ../garage-buddy/CHANGELOG.md
+python3 scripts/gen_release_notes.py --changelog /elsewhere/CHANGELOG.md
+```
+
+Versions below `1.0.0` were TestFlight-only, so they're folded behind a
+disclosure rather than leading the page — see `COLLAPSE_BELOW` in the script.
+
+The script implements only the markdown subset the changelog actually uses
+(`## [version] - date`, `### Category`, bullets with continuation lines, nested
+bullets, `**bold**`, `` `code` ``, links). That's deliberate: there's no
+markdown library on the machine, and one page doesn't justify a dependency. If
+the changelog starts using new syntax, extend `inline()` — anything unhandled
+is HTML-escaped and passes through as literal text rather than breaking.
+
+`scripts/gen_release_notes.py` is duplicated in
+[`workout-buddy-site`](https://github.com/shuffman/workout-buddy-site) with a
+different config block, for the same reason `style.css` is: two self-contained
+repos beat a shared package for something this small.
 
 ## Privacy policy is generated — don't hand-edit
 

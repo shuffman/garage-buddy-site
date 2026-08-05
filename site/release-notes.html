@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garage Buddy — Release Notes</title>
+<meta name="description" content="What changed in every version of Garage Buddy — new features, fixes, and improvements.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/">Garage Buddy</a>
+  <a href="/release-notes" aria-current="page">Release Notes</a>
+  <a href="/support">Support</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+</nav>
+
+<h1>Release Notes</h1>
+<p class="tagline">Current version <strong>1.2.3</strong> &middot; 2026-08-05</p>
+
+<p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-2-3">1.2.3 <span class="ver-date">2026-08-05</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Documents are named for when they were issued, not when they expire.</strong> 1.2.2 led a registration's filename with its expiration, filing a registration issued this year under next year. The document scan now reads the <strong>issue/effective</strong> date as well — it previously extracted only the expiration, which is why the name reached for the wrong one — and that is what the filename leads with: "2026-03-14 — Registration.pdf". A document showing only an expiration gets no date rather than a misleading one. The expiration is still read and still drives the renewal reminder; it just doesn't name the file.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-2-2">1.2.2 <span class="ver-date">2026-08-05</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Document names lead with the document's own date, in YYYY-MM-DD.</strong> A receipt is now "2026-07-16 — Les Schwab.pdf", so documents sort chronologically in the app, in Drive, and in Files. The date is read off the document, never today's; a document with no date of its own gets no date rather than a filing date, which would say when you scanned it instead of what it is.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-2-1">1.2.1 <span class="ver-date">2026-08-05</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>"Suggest a Name" reported readable receipts as unreadable.</strong> The document read only knows vehicle paperwork — title, registration, insurance — so a receipt came back classified as "other", and the app turned "I have no name for this kind of document" into "Couldn't read that document", sending you looking for a problem that wasn't there. Receipts are now read as receipts and named for the vendor and date ("Les Schwab — 2026-07-16.pdf"), and the two failures are told apart: one message for a file that wouldn't open, a different one for a document that was read but couldn't be named.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-2-0">1.2.0 <span class="ver-date">2026-08-05</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Scanned documents name themselves.</strong> With an AI key configured, a document you photograph or scan is read before it's saved and filed under a name worth reading — "Registration — expires 2027-03.pdf", "Insurance — State Farm.jpg" — instead of "Document 2026-08-05.pdf". The name comes from the structured fields the app already extracts, not from asking a model to invent a filename. Characters a filename can't hold (slashes, colons, newlines and the rest) are replaced, names are length-capped on a word boundary, and anything unusable falls back to the old dated name. No key, no signal, or an unrecognised document all fall back silently — the document still saves. Files you import keep the name you already gave them.</li>
+  <li><strong>Rename a document.</strong> Long-press any car document → Rename. The extension is preserved for you, so a file can't stop opening as a PDF because the name was cleared. With AI configured, "Suggest a Name" reads the document and fills the field for you to accept or edit — it never applies a name behind your back, and it says so rather than replacing a good name with a generic one when it can't tell what the document is. Renaming also renames the file in your Google Drive, so the two don't drift apart.</li>
+  <li><strong>Full vehicle history — the packet you hand a buyer.</strong> A car page now has two export buttons. The existing share button still produces the quick report; the new one builds a complete history document: a cover page, an AI-written history of the car (how long you've had it, how it's been used, what's been repaired and when), charts for mileage, spending, where the money went, and fuel economy per fill, then the service and repair record with your notes in full, the complete log, a page or two of photo thumbnails, and the scanned receipts themselves.
+    <ul>
+      <li><strong>It deliberately withholds what a buyer shouldn't get.</strong> No purchase price, sale price, or profit anywhere in it. No title, registration, or insurance documents — those carry VIN provenance, policy numbers, and your address — and no receipts filed under Insurance or Registration. Those entries still appear as lines in the log; only their scanned images are held back. Nothing is removed from the app or the quick report.</li>
+      <li><strong>It degrades instead of failing.</strong> No AI key or no signal means the history page is simply left out, and any attachment that can't be downloaded is counted in the document ("2 attachments couldn't be downloaded") rather than quietly missing. Photos beyond the two-page cap are reported the same way.</li>
+      <li>Receipts are downscaled before embedding, so a packet with dozens of them stays a sane file size. <strong>Multi-page PDF receipts are included in full</strong>, each page captioned "page 2 of 3" — a shop invoice often runs its line items and totals onto later pages.</li>
+      <li><strong>The progress panel says what it's actually doing</strong> instead of one unchanging line: which step is running, what it's working on right now (the model being asked, or the file being fetched and how far through), and a per-step seconds counter so a slow AI call is visibly alive rather than apparently hung. Past eight seconds it also notes that the writing step usually takes 10–30 seconds.</li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-1-0">1.1.0 <span class="ver-date">2026-08-01</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Garage Buddy on the Mac.</strong> The app now runs natively on macOS (Mac Catalyst). Sign in with the same Google account and it reads and writes the same spreadsheet as your iPhone — edit on either, and the change shows up on the other. On-device mode stays per-device, since there's no shared storage to sync.</li>
+  <li><strong>iPad support.</strong> Required for the Mac build, and the layout adapts.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>PDF reports couldn't be saved on the Mac.</strong> Exporting a report opened the macOS Share menu, which offers share destinations only — AirDrop, Mail, Messages — with no way to save the file. "Save to Files" is an iOS-only share action; on macOS saving belongs in a save panel. The Mac build now opens a proper save panel, and iPhone/iPad keep the share sheet (where Save to Files already appears alongside AirDrop and Mail). This also clears the duplicate "Copy" entry the Mac menu was showing.</li>
+  <li><strong>Buttons were nearly invisible in dark mode.</strong> The accent colour had no dark-appearance variant, so blue-on-dark text sat at a 1.21:1 contrast ratio against a 4.5:1 accessibility minimum — worst on Settings, where "Connect Google Sheets" and "Keep Everything on This Device" were barely legible. Now 5.11:1. This affected iPhone dark mode too, not just the Mac.</li>
+  <li><strong>The app called itself "CarLog" on the Mac</strong> — in the menu bar, in Finder, and in the macOS "…wants to use accounts.google.com to sign in" prompt. It now says Garage Buddy everywhere.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-0-0">1.0.0 <span class="ver-date">2026-07-24</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>First public release.</strong> No functional change from 0.38.4 — this version exists so the build matches the <code>1.0</code> record in App Store Connect. Every feature below shipped and was field-tested through the 0.x TestFlight series: local-first or Google Sheets storage with two-way migration, AI/on-device odometer scanning, per-fill MPG and MPGe, reminders and service intervals, photo albums and document scans, PDF reports, and home-screen widgets.</li>
+  </ul>
+</section>
+
+<details class="early">
+  <summary>Earlier pre-release versions (71 TestFlight builds)</summary>
+
+<section class="release">
+  <h2 id="v0-38-4">0.38.4 <span class="ver-date">2026-07-24</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Fuel economy no longer reads in the thousands of MPG.</strong> An entry with no odometer reading was being used as the starting point for the tank-method average, so the car's whole odometer counted as one tank's worth of miles — a car doing a real 30 MPG could show as <strong>2,515 MPG</strong> on the fleet economy chart, in the PDF report, and in the AI fleet summary. The same applied to EV efficiency (MPGe). This completes the 0.38.2 fix, which covered the mileage charts but missed the economy calculations.</li>
+  <li><strong>No more reminders for cars you've sold.</strong> Date reminders on a retired car kept their scheduled notifications, so a repeating one (registration, insurance) would nudge you every year about a car you no longer own. Retiring or un-retiring a car now updates its notifications immediately.</li>
+  <li><strong>A bad AI Base URL no longer crashes the app.</strong> Typing or pasting an invalid address into the custom AI endpoint (a stray space, a trailing newline) crashed on the next scan — and because the value was saved, it crashed again on every retry. It now reports a clear error instead.</li>
+  <li><strong>The AI provider picker stops erasing itself.</strong> When entering a custom model id, choosing a provider reset the model back to a suggested one, which made the Provider section — and the Base URL field with it — disappear mid-selection. Choosing a provider now keeps your custom model and just moves the endpoint.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-38-3">0.38.3 <span class="ver-date">2026-07-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A dropped connection during a data move can no longer lose your photos.</strong> While moving data between Google and this device, any problem reading a file was treated as "you must have deleted this one" — so the move quietly unlinked it and carried on. A Wi-Fi drop, a timeout, or Google rate-limiting a burst of downloads partway through could therefore detach <strong>every remaining photo and document</strong>, report the move as successful, and (moving back the other way) overwrite the originals. Only a file the source genuinely no longer has is skipped now; anything else stops the move, which was always safe — nothing is deleted and you can simply retry.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-38-2">0.38.2 <span class="ver-date">2026-07-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Car prices no longer collapse to a few dollars.</strong> Typing a purchase or sale price went wrong the moment it reached four digits: the field re-formatted itself mid-typing (<code>2500</code> → <code>2,500</code>), and the next digit made it read the separator as a decimal point — so a <strong>$25,000 car saved as $2.50</strong>. Prices are now parsed once when you tap Save, matching how the rest of the app handles money entry.</li>
+  <li><strong>Entries without an odometer reading no longer distort everything.</strong> A blank odometer (an insurance or registration entry, or an imported row with an empty cell) was being read as a genuine reading of zero, which:
+    <ul>
+      <li>charted the car's <strong>entire odometer as miles driven</strong>, smeared back across every month before the first real reading;</li>
+      <li>reported that whole figure as "driven with you" on the car and in the PDF report;</li>
+      <li>raised a false <strong>"possible odometer typo"</strong> warning on clean data, and put the orange check-this-entry triangle next to correct entries in the report. A reading of zero now consistently means "no reading" everywhere, as it already did on the activity heatmap.</li>
+    </ul>
+  </li>
+  <li><strong>Miles land in the right months.</strong> An entry that recorded no new miles (a blank or rolled-back odometer) reset the measuring point, pushing the surrounding interval's miles into later months on the chart.</li>
+  <li><strong>Finishing an overdue reminder actually clears it.</strong> Completing a repeating reminder rolled it forward by exactly one interval — so an oil change 12,000 miles overdue, or a registration two years past, came back still overdue and needed tapping again for every interval you'd missed. It now rolls forward to the next date or mileage genuinely ahead of you (keeping any custom offset), and overdue annual reminders can be notified again.</li>
+  <li><strong>Report typo-flagging catches both sides.</strong> When several entries share the most recent day, all of them are now checked against a later-dated higher reading instead of only the first.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>The unit-test bundle can be code signed again (it had no generated <code>Info.plist</code>, so <code>xcodebuild test</code> failed to build). Tests are part of the release pipeline, so this had to work before anything could ship on it.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-38-1">0.38.1 <span class="ver-date">2026-07-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Data moves are safer (local-first review).</strong> A batch of fixes to the Google↔on-device migrations:
+    <ul>
+      <li>Adding or editing anything <strong>during</strong> a move is now held with a "finishing the data move" note and the + button hides, instead of the change landing in the store about to be swapped out and being lost.</li>
+      <li><strong>Moving back to Google no longer resurrects deleted cars/entries.</strong> The move now clears the destination sheet before rewriting it, so it mirrors what's on your device exactly (previously it merged into the reused spreadsheet, so anything deleted while on-device reappeared).</li>
+      <li>A single file the app can't read (a Drive file you deleted, a missing local blob) is <strong>skipped and reported</strong> instead of aborting the whole move.</li>
+      <li>Tapping "Move Data to Google Sheets" twice can't start two moves; a failed move cleans up the files it uploaded so a retry doesn't pile up duplicates in Drive.</li>
+    </ul>
+  </li>
+  <li><strong>Charts tell same-named cars apart.</strong> Two cars with no nickname and the same year/make/model (or two blank "Untitled Car"s) no longer share a color, collapse into one legend entry, or get isolated together — charts now key on each car's identity, not its display name.</li>
+  <li><strong>Smoother photo album.</strong> Adding several library photos at once, and opening a photo full-screen, no longer briefly freezes the screen (image encoding moved off the main thread); album memory use is capped.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-38-0">0.38.0 <span class="ver-date">2026-07-18</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Local-first mode — no Google account needed.</strong> On first run the app asks where your data should live: a Google Sheet in your own Drive (as before), or entirely on this iPhone. Local mode stores everything on-device (included in your device backup), works with zero network, and only the optional AI features ever leave the phone. <strong>You can switch later and take your data with you</strong>, in both directions, from Settings → Data: "Move Data to This Device" copies every entry, photo, and document out of Google (leaving the spreadsheet behind as a frozen snapshot), and "Move Data to Google Sheets" moves a local garage back into Google Sheets + Drive. Both moves show progress, survive being retried, and never delete the source until the copy has fully succeeded.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-37-1">0.37.1 <span class="ver-date">2026-07-18</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Copying the PDF report finally pastes.</strong> The share sheet's Copy now puts a named PDF *file* on the clipboard — the same thing the Files app's Copy produces — so pasting into Messages, Mail, or Files attaches the report. (The previous fix copied typed PDF bytes, which most apps ignore on paste; that's why Copy still appeared to do nothing.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-37-0">0.37.0 <span class="ver-date">2026-07-18</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Add several album photos at once.</strong> "Add Photos" on a car's page now opens a multi-select library picker — pick any number and they all join the album in selection order (the first becomes the cover on an empty album). Taking a photo with the camera remains one at a time.</li>
+  <li><strong>Paste photos into the album.</strong> Copy a photo anywhere (e.g. from a text message) and "Add Photos" offers <strong>Paste Photo</strong> whenever the clipboard holds an image. iOS asks its usual allow-paste question on first use.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Chart legend wraps.</strong> The tappable car legend under the charts scrolled horizontally, which clipped cars off the end and dragged the chart when swiped. It now wraps onto as many lines as needed, every car visible.</li>
+  <li><strong>Garage rows no longer wrap.</strong> With the to-do counter and badges in the row there wasn't width for longer names, which wrapped onto extra lines. The name and odometer use a slightly smaller font and names stay on one line (truncating if very long).</li>
+  <li><strong>Car page toolbar overlap.</strong> The car's PDF-export button overlapped the Edit button; it now sits on the left edge of the navigation bar, in the same spot as the whole-garage export button.</li>
+  <li><strong>Dashboard summary cards.</strong> Long amounts (e.g. $19,930) in the Spent card no longer wrap — the value shrinks to fit on one line. The Cars card now opens the Garage tab when tapped, and the Due soon card jumps to the reminders list further down the dashboard.</li>
+  <li><strong>Fuel $ chart crash.</strong> The fuel-price chart colored each dot by the car name *stored on the transaction*, while its color scale was pinned to *current* car names — so any fill logged before a car was renamed (or a hand-edited name) crashed the chart the moment it appeared, every time. Dots now resolve the car by its stable id and always use the live name; fills whose car no longer exists are dropped. (Reproduced against the chart framework and covered by regression tests; the other charts already derived names from live cars and were never affected.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-36-0">0.36.0 <span class="ver-date">2026-07-18</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Car photo albums.</strong> Each car has a Photos section on its page: add whole-car shots from the camera or library, tap to view full-screen (pinch-zoom), long-press to delete or pick the <strong>cover</strong> — the photo that headlines the car's page and appears as its thumbnail in the garage list (first photo added becomes the cover automatically). Pictures are stored in a "Photo Album" folder inside the car's own Google Drive folder, ride the same offline pipeline as receipts (photos added with no signal appear immediately and upload when a connection returns), and render from an on-device cache that decodes thumbnails at thumbnail size — no Drive round-trip, no scroll stutter. The album is separate from the AI "reference photo" (still a dashboard shot for scan recognition) and from Documents (paperwork).</li>
+  <li><strong>Per-car to-do list.</strong> A lightweight checklist on each car's page for maintenance things you notice and don't want to forget — type an item, tap to check it off, swipe to delete. No due dates or notifications (that's what Reminders are for). The garage list shows a badge with each car's open-item count. Stored in a new <code>Todos</code> tab (created automatically) and fully offline-capable like every other write.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Offline cache survives updates.</strong> Adding a new field to the on-device cache (the <code>todos</code> list) would have silently discarded every existing cache on first launch after updating — blanking the app for anyone who updated while offline. The cache now decodes old files, treating missing sections as empty (with a regression test).</li>
+  <li>Sheet booleans (<code>is_done</code>) are now parsed by one shared reader for reminders and to-dos, so the accepted truthy spellings can't drift apart.</li>
+  </ul>
+  <h3 class="cat cat-removed">Removed</h3>
+  <ul>
+  <li><strong>Driving-activity heatmap</strong> dropped from the PDF report — the GitHub-style day squares spread miles evenly between odometer readings, which didn't reflect how entries are actually logged.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-35-0">0.35.0 <span class="ver-date">2026-07-17</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Concurrent-edit protection.</strong> Rows now carry an <code>updated_at</code> stamp (column added automatically). A change queued offline no longer clobbers an edit made later from another device or the sheet — the newer edit wins and the stale queued write is skipped. Rows without a stamp (hand edits, older data) always accept writes, preserving hand-edit tolerance.</li>
+  <li><strong>Attachments work offline.</strong> Receipts and documents captured with no signal are staged on-device, appear (and preview) immediately, and upload to Drive automatically when a connection returns — completing the offline story. Deleting a still-queued attachment cancels the upload instead of round-tripping it.</li>
+  <li><strong>Fleet report.</strong> A new report button on the Dashboard opens a this-month / this-year fleet summary: total miles and spend, a utilization ranking (workhorses at the top, idle cars flagged), and an AI-written narrative covering standouts, upcoming maintenance, and anomalies. The year view doubles as a year-in-review.</li>
+  <li><strong>Scans learn from corrections.</strong> When a photo scan guesses the wrong car (or can't guess) and you pick the right one before saving, that photo automatically becomes the car's reference photo if it didn't have one — so the next scan recognizes that dashboard.</li>
+  <li><strong>AI document reading.</strong> Long-press any car document (new or previously imported, photo or PDF) → "Extract Details" has the AI read it: VIN, license plate, policy number, carrier, and expiration date, presented in a review sheet where you choose what to apply — set the car's VIN/plate, and create a renewal reminder from the expiration date. Nothing is applied without review.</li>
+  <li><strong>EV support.</strong> New "Charging" entry category with a kWh field (a <code>kwh</code> column is added to existing sheets automatically). EVs get a per-charge efficiency chart (mi/kWh with moving average) on their car page, and they join the fleet economy chart as MPGe (33.7 kWh ≈ 1 gal), marked with an "e" — the Model 3 and the F-150 finally share a scale.</li>
+  <li><strong>Single-car report.</strong> A share button on the car screen exports that car's full history as its own PDF — the "hand it to the buyer or mechanic" document.</li>
+  <li><strong>Report: documents + driving heatmap.</strong> Each car's report section now ends with its car-level documents (title, registration, …) and includes a compact GitHub-style driving-activity strip (one square per day for the last 26 weeks; miles spread between odometer readings).</li>
+  <li><strong>PDF report navigation.</strong> The garage overview rows on the report's first page are now clickable — tapping a car jumps to its section. Cars are ordered deliberately (active first, then most recently driven) instead of whatever order the sheet had.</li>
+  <li><strong>Smarter anomaly alerts.</strong> Two new data-quality warnings join the rollback/stale badges: an entry costing several times the car's norm for that category ("check for a typo"), and a fill-up whose fuel economy is well below the car's recent average ("service may be due"). Shown on the car page and as garage badges.</li>
+  <li><strong>Fuel price trends.</strong> A new "Fuel $" dashboard chart shows what you actually paid per gallon (or liter) at every fill — one dot per fill-up, colored by car, with a 5-fill rolling average line. Swipe/range and the tap-to-isolate legend work like the other charts.</li>
+  <li><strong>Service templates.</strong> New reminders offer one-tap presets (oil every 5k, tire rotation every 7.5k, registration yearly, insurance every 6 months, …) that fill the form with the repeat interval and the next due point anchored to owner's-manual mileage multiples. Everything stays editable before saving.</li>
+  <li><strong>Retire = sell in one step.</strong> "Retire (Sold) Car" now opens a small sheet asking for the sale price (optional, with live profit preview) and sale date, instead of retiring and then editing the car to record the price.</li>
+  <li><strong>Report entries sort by mileage</strong> (highest first), and any entry whose calendar day contradicts the mileage order gets an orange "date out of order" flag — likely an entry error. Several same-day entries with shuffled miles are normal and never flagged. Both sides of a date/mileage disagreement are flagged, since either could be the typo.</li>
+  </ul>
+  <h3 class="cat cat-fixedfromcodereview">Fixed (from code review)</h3>
+  <ul>
+  <li><strong>Locale-safe number entry.</strong> Costs, gallons, and car prices are parsed with a locale-tolerant parser: "1,250.50", "1.250,50", and "1250,50" all read correctly. Previously a US-style thousands separator silently dropped the cost, and comma-decimal input could inflate a price 100×.</li>
+  <li><strong>Revoked Google access recovers gracefully.</strong> If you remove Garage Buddy's access in your Google Account, the app now signs out locally, keeps your cached data and queued changes, shows one clear banner, and Settings' "Try Again" runs the full sign-in. Previously it looped error banners while still looking connected.</li>
+  <li><strong>Car document PDF import reports read failures</strong> instead of silently doing nothing.</li>
+  <li><strong>AI scan replies parse more robustly</strong> — JSON extraction now survives models that wrap the answer in prose containing braces.</li>
+  <li><strong>Odometer photos decode once, not twice</strong>, for the upright + rotated OCR passes (faster scans, less memory).</li>
+  <li>Settings footer no longer references the old "Car Log Data" sheet name.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-34-1">0.34.1 <span class="ver-date">2026-07-16</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>"Copy" in the report share sheet now copies the PDF itself</strong> (pasteable into Mail as an attachment) instead of a useless file path. Sharing directly to Mail also gets a sensible subject line.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-34-0">0.34.0 <span class="ver-date">2026-07-16</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Car documents.</strong> A car's Documents section now has an "Add Document" button for files that belong to the car itself — title, registration, insurance card — with the same scan/photo/PDF options as entry attachments. They upload to the car's Drive folder and no longer require inventing an entry to hang them on. (The Attachments tab gains a <code>car_id</code> column, added to existing sheets automatically.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-33-3">0.33.3 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li>The Dashboard's chart tab now follows the fuel-economy unit setting — "MPG" becomes "km/L", "L/100 km", or "gal/100 mi" — and "Mileage" reads "Distance" for metric users.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-33-2">0.33.2 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>No more red "Cancelled" banner.</strong> Interrupted requests (backgrounding the app mid-sync, abandoning a pull-to-refresh, dismissing the Google sign-in sheet) are cancellations, not failures — they're now silenced everywhere errors surface, and a cancelled sync retries automatically on the next foreground/reconnect.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-33-1">0.33.1 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The spreadsheet is now named "Garage Buddy"</strong> (was "Car Log Data"). The app renames an existing sheet in place on next connect — the Drive id is unchanged, so nothing about your data or links breaks. Fresh installs also find the sheet under either name.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-33-0">0.33.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Units settings</strong> (#10): Settings → Units picks distance (miles/km), volume (gallons/liters), and fuel economy (MPG, km/L, L/100 km, gal/100 mi). Applies across entry forms (type in your unit — the sheet keeps storing miles/gallons unchanged), charts, car details, reminders, widgets, the PDF report, and scan plausibility checks. Defaults are mi/gal/MPG, so nothing changes until you switch.</li>
+  <li><strong>All app data now lives in a "Garage Buddy" Drive folder</strong> (#15): new spreadsheets are created there, and attachments/reference photos go into per-car folders directly beneath it. Existing files keep working wherever they are (Drive tracks them by id); a short manual migration moves old files into the new folder.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-32-1">0.32.1 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>The exported PDF is named with the date ("Garage Buddy Report 2026-07-12.pdf"), so saved reports don't overwrite each other and sort chronologically.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-32-0">0.32.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>PDF report</strong> (#14): notes now render as grey text underneath their entry; the main table columns got the freed width and never wrap.</li>
+  <li><strong>Dashboard</strong> (#16, #17, #18): the reminders card only shows IMMINENT reminders (overdue, or due within 30 days / 500 miles) and sits below the graph; the "Entries" tile is now "Due soon" (imminent-reminder count); Recent Activity shows the last 5 entries. The Reminders widget follows the same imminent-only rule.</li>
+  <li><strong>Garage</strong> (#19): a car's impending-reminder bell can no longer be hidden by a data-quality warning — reminder and odometer/stale badges now show independently side by side.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li>Demo/seeded mode showed "Not Connected" since 0.29.0 (it never set the data-loaded flag the views now gate on). DEBUG-only.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-31-0">0.31.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Unit tests</strong> (#9): a CarLogTests target with 48 tests across six suites covering the app's pure logic — mileage distribution (incl. the 0=unknown rule), per-fill MPG + moving average, tank-method MPG, service-interval anchoring (the 0.27.1 bug is now a permanent regression test), car matching, lenient sheet-date parsing, transaction dedup, OCR number extraction, the offline journal/cache round-trips, offline-error classification, ISO dates, and AI JSON extraction. The test suite runs in Xcode Cloud on every push — a failing test now blocks the TestFlight deploy.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Service-interval due-point math moved to Analytics (nextServiceDue); a few internal helpers exposed for testing. No behavior changes.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-30-2">0.30.2 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Attachments with slashes in their names open again</strong> (#12). Files named before the ISO-date switch (0.14.3) — e.g. "Photo 7/4/2026.jpg" — failed to preview with a "file doesn't exist" error, because the slashes read as folders in the local temp path. The name is now sanitized for the filesystem only; display names and Drive files are unchanged.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-30-1">0.30.1 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>API keys are verified when you save them</strong> — a tiny live call runs against the provider and reports immediately: verified, rejected (bad paste/revoked), over quota (with an explanation of free-tier resets vs billing), or model-access problems. A "Verify Key" button re-checks a saved key any time. No more discovering key problems as cryptic scan failures.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-30-0">0.30.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>API keys no longer "disappear."</strong> Two hardening fixes: key state is now read live from the Keychain (a launch-time cache could go stale when iOS prewarmed the app before first unlock, making every key look lost at once), and keys are stored with AfterFirstUnlock protection so prewarmed reads succeed. If your keys were showing as missing, they may reappear after this update; if the app was reinstalled, they need one re-paste (iOS wipes an app's Keychain on uninstall).</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>AI settings reorganized.</strong> The section is now just "AI" (it powers scanning AND text features like service intervals, not only photos):
+    <ul>
+      <li>The model list is the page's focus; the Provider picker only appears when a custom model id is selected.</li>
+      <li>The API Key section names the provider it edits and lists which providers have saved keys.</li>
+      <li>The test bench moved to its own "Test Models" screen.</li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-29-2">0.29.2 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Sync status chip on the Dashboard.</strong> An orange "Offline" capsule (with the queued-change count, e.g. "Offline · 2") appears in the nav bar when disconnected — tap it to retry — and a brief "Syncing" chip shows while queued changes drain after reconnecting. Nothing shows when everything is normal.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-29-1">0.29.1 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Offline launch actually shows your data now.</strong> GoogleSignIn's silent sign-in restore needs the network to refresh an expired token, so it fails in airplane mode — and 0.29.0 gated the offline cache behind that check, showing "Not Connected" instead of your garage. The cache now loads regardless (its presence proves ownership — signing out deletes it); auth is retried automatically when connectivity returns, then queued changes sync. Offline sessions also keep the cache updated and show the account name in Settings.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-29-0">0.29.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Offline support</strong> (ADR-016). The app now works without a connection:
+    <ul>
+      <li><strong>Instant launch / offline viewing</strong> — the last-loaded data is cached on device and shown immediately at launch (even in airplane mode); the live Google sync refreshes in the background.</li>
+      <li><strong>Offline logging</strong> — every change (entries, reminders, cars, deletes) goes into a persistent write-ahead journal and syncs automatically when connectivity returns (on reconnect, foreground, or launch). Queued changes survive app restarts and are always visible in the app.</li>
+      <li><strong>Offline status</strong> — Settings shows an "Offline" state with the number of changes waiting to sync and a Try Again button; the rest of the app stays fully usable, including the quick-add button.</li>
+      <li>Attachments and reference photos still need a connection (they upload to Drive) and say so if it fails.</li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-28-3">0.28.3 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Errors now show as a banner instead of an alert</strong> — a red banner slides in at the top, auto-dismisses after 5s (tap to dismiss sooner), and renders in its own overlay window so it appears above sheets too. This closes the last silent-failure hole: an alert can't present while a sheet is open, so a failed save or attachment upload during entry showed nothing.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-28-2">0.28.2 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>MPG tab no longer goes blank on short ranges.</strong> The tank method needs two fills inside the window, so the 6-month default could empty the chart for seldom-driven cars — it now falls back to all-time averages (and says so), and an isolated car with no fills in range shows its full history instead of bouncing back to the fleet view.</li>
+  <li><strong>Gemini 3.1 Pro scans no longer risk empty responses</strong>: the output-token cap was raised so reasoning models can think before emitting the JSON (unused headroom costs nothing).</li>
+  <li><strong>A custom OpenAI-compatible base URL now survives switching providers</strong> — it's stored separately and restored when you come back.</li>
+  <li><strong>AI calls retry on rate limits/transient errors</strong> (1s/2s backoff) — Test All's burst of requests was prone to spurious 429 failures.</li>
+  <li><strong>Signing out clears cached reference photos</strong>, so a different account's scans can't match against the previous account's dashboards.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-28-1">0.28.1 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>One model list across all providers.</strong> The scanning list now shows every provider's models together (Claude, Gemini, GPT — plus On-device and a custom id); picking a model automatically selects its provider and uses that provider's saved key. Models whose provider has no key yet show an orange key badge. The Provider picker remains only for custom model ids and the generic endpoint's base URL.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-28-0">0.28.0 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Per-provider API keys.</strong> Each provider (Anthropic, Gemini, OpenAI-compatible) keeps its own key in the Keychain — switching providers never loses a key. Your existing key migrates automatically to the provider it was saved under.</li>
+  <li><strong>Cross-provider Test All.</strong> The scan test bench now sweeps every model of every provider you've saved a key for (plus on-device) in one tap — e.g. Opus, Sonnet, Haiku, Gemini Pro, Gemini Flash, and on-device, all on the same photo.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-27-2">0.27.2 <span class="ver-date">2026-07-12</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Faster scans.</strong> Reference photos are only uploaded when the car is still unknown (a scan with the car already picked skips them entirely); the main scan image is capped at 1600px (~40%% fewer upload bytes and vision tokens, digits still crisp); receipt pages are downsampled to 1800px for the upload (the stored PDF keeps full quality); the on-device OCR's two orientation passes now run in parallel. JPEG quality is unchanged — compression artifacts hurt digit reading.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-27-1">0.27.1 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>AI service intervals now anchor to absolute odometer multiples</strong> (the way the owner's-manual table works: 30k/60k/90k…), not to current mileage + interval — which wrongly assumed every service had just been performed and set everything one full interval late. A 10k oil interval on a car at 80,282 mi now comes due at 90,000 (was 90,282); 60k plugs at 120,000 (was 140,282). The review sheet shows each item's computed due point, and the footer explains how to adjust when you know a service was done recently.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-27-0">0.27.0 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>AI-suggested service intervals.</strong> On a car's page (Reminders section, when an AI key is set): "Suggest Service Intervals (AI)" asks your model for the manufacturer's routine schedule — oil, rotation, filters, fluids, plugs — and presents it for review with checkboxes. Selected items become repeating reminders: mileage intervals anchor to the current odometer, time intervals to today. Items whose name matches an existing reminder default to off, and every created reminder is noted "AI-suggested — verify against the owner's manual." EVs get EV-appropriate schedules (no oil changes).</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-26-2">0.26.2 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>On-device OCR no longer reads upside-down odometers backwards</strong> (80282 → 28208). Dashboard photos taken pointing down often carry a wrong gravity-based orientation from iOS, and rotationally-symmetric seven-segment digits (0/2/8) still "read" flipped. The on-device reader now OCRs the photo both ways and lets mileage plausibility pick the orientation (the rotated reading must win by a clear margin). The AI prompt also warns the model the photo may be inverted.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-26-1">0.26.1 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Test All</strong> in the scan test bench: one tap runs every model of the current provider plus on-device OCR sequentially on the same photo, with progress shown per engine. (Cross-provider sweeps would need a second API key — each provider's models share the one saved key.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-26-0">0.26.0 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Scan test bench in Settings → AI.</strong> Choose a test photo once, then run the complete odometer pipeline — reference photos, seven-segment prompt, on-device cross-check — against the currently selected model. Results accumulate (model, reading, the digits it saw, car match, confidence, cross-check agreement, elapsed time), so you can switch models and re-run on the same photo to compare. Nothing is added to your log.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-25-0">0.25.0 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Google (Gemini) provider</strong> (#8). Settings → AI now offers Gemini via Google's OpenAI-compatible endpoint — Gemini 3.1 Pro (class-leading vision) and Gemini 3.5 Flash (fast/cheap). Paste a Gemini API key and pick a model.</li>
+  <li><strong>On-device cross-check for AI odometer scans.</strong> Every AI scan also runs the free on-device OCR in parallel: if both read the same number the scan message says so; if they disagree it shows both readings and asks you to double-check — catching the single-flipped-digit errors segmented displays cause.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Scan prompts rebuilt for seven-segment displays</strong> (#8): the model is told the display type and its classic confusions (0/8, 5/6, 6/8), to transcribe digit by digit, to exclude boxed/decimal trailing tenths digits and trip meters, and to sanity-check digit count against the car's last known miles. Gas-pump scans get the same treatment plus explicit decimal-place guidance.</li>
+  <li><strong>Requests now follow the documented best layout for vision models</strong>: images come before the instructions and every image is individually labeled (odometer photo, each reference photo, each receipt page).</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-24-1">0.24.1 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Dashboard charts now default to the <strong>6-month</strong> range (was All). Swipe up on the chart or tap the range chip for longer windows.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-24-0">0.24.0 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Swipe the Dashboard chart</strong> (#6): left/right switches between Mileage / Expenses / MPG; up/down widens/narrows the time range (6M · 1Y · 2Y · All). A tappable range chip next to the subtitle shows the active window and cycles it as an alternative to swiping. The range also scopes the MPG views (fleet averages and per-fill charts).</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>All dates now display in ISO-8601</strong> (#7): entry rows, car details, reminders (in-app and widget), notifications, and the PDF report show YYYY-MM-DD. Attachment filenames already did.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-23-0">0.23.0 <span class="ver-date">2026-07-11</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Per-fill-up MPG charts</strong> (#5). A car's fuel economy now shows every individual fill-up as a bar (miles since the previous fill ÷ gallons added) with a 5-fill moving-average trend line:
+    <ul>
+      <li><strong>Dashboard → MPG</strong>: tap a car in the legend to drill from the fleet averages into its per-fill history; tap again to go back.</li>
+      <li><strong>Car detail</strong>: a new "Fuel Economy" section shows the same chart.</li>
+      <li>Implausible readings (missed fills, typos over 150 MPG) are dropped from the chart rather than distorting it.</li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-22-2">0.22.2 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>PDF report page breaks are clean.</strong> Sections were rendered as one tall image and sliced every page-height, cutting rows mid-text. The report is now paginated block-by-block (headers, charts, individual table rows), so a row that doesn't fit moves whole to the next page. Tables use fixed-width columns so rows stay aligned across pages, and table headers travel with their first row. Verified against a 21-page report with 47-row tables.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-22-1">0.22.1 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>The Scan Odometer widget opens the camera again on a cold launch.</strong> The entry sheet appears before the Google sync delivers the cars; the auto-scan ran once, found no cars, and gave up silently. It now fires as soon as the fleet loads (and shows "Loading your garage…" instead of "Add a Car First" while syncing). Warm launches were unaffected — which is why the widget seemed to work until an app update forced a cold start.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Adds DEBUG-only launch args (<code>-seedSlow</code>, <code>-quickActionScan</code>) used to reproduce and verify the race in the simulator.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-22-0">0.22.0 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Fleet-wide Reminders on the Dashboard.</strong> Every open reminder across active cars, most urgent first — tap to open the car, long-press to mark done. The in-app counterpart of the Reminders widget.</li>
+  <li><strong>Reference photos are now wired up.</strong> Add a dashboard/interior photo when editing a car (the <code>reference_photo_id</code> field finally has UI); AI odometer scans attach the fleet's reference photos so the model identifies the car visually, not just by mileage. Photos are cached locally for fast scans.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li>Picking GPT-4o mini no longer silently reverts to GPT-4o on next launch (the legacy weak-model upgrade now runs exactly once).</li>
+  <li>Disconnecting clears attachments, reminders, and the home-screen widgets — no more previous-account data lingering after sign-out.</li>
+  <li>"Driven with you" and the PDF report now honour the "0 = unknown starting mileage" rule, matching the charts (a used car with unknown start no longer shows its whole odometer as driven).</li>
+  <li>Deleting an entry now also deletes its attachments (sheet rows + Drive files); cancelling a new entry cleans up attachments already uploaded.</li>
+  <li>Errors now surface on every tab, not just Settings — a failed save can no longer look like a success.</li>
+  <li>Reminders due today now fire their 9am notification (they were skipped).</li>
+  <li>Receipt OCR no longer overwrites a date you picked yourself.</li>
+  <li>Google API calls retry with backoff on rate limits/server errors.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Internal streamlining: one shared miles-driven/odometer implementation, one currency-code helper, <code>vehicleDescription</code> on Car, dead code removed.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-21-1">0.21.1 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Compacted the small <strong>Fleet Snapshot</strong> widget — each stat is now a single line with a short label and auto-shrinking text, so all three fit without clipping. Medium keeps the larger stacked layout beside the sparkline.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-21-0">0.21.0 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Two data home-screen widgets</strong> (small + medium):
+    <ul>
+      <li><strong>Upcoming Reminders</strong> — your next maintenance/renewal reminders across active cars, most urgent first, colour-coded by status.</li>
+      <li><strong>Fleet Snapshot</strong> — active-car count, miles and spend this month, plus a six-month miles-per-month sparkline.</li>
+    </ul>
+  </li>
+  <li>The app publishes a shared snapshot to an App Group container after every reload and data change, and refreshes the widgets automatically.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Requires the <code>group.com.shuffman.carlog</code> App Group on both the app and widget App IDs (one-time provisioning).</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-20-1">0.20.1 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Simplified AI settings.</strong> The separate on-device/AI engine toggle is gone — "On-device" is now just a <strong>Free</strong> option in the same list as the AI models. Pick a row and it sets everything; the Provider and API Key fields only appear when an AI model is selected.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-20-0">0.20.0 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>AI model picker.</strong> Settings → AI now offers a menu of vision models with a rough per-scan cost, instead of typing a model identifier. For Anthropic: Opus 4.8 (~2–3¢, most accurate), Sonnet 5 (~1¢), Haiku 4.5 (~0.3¢). A "Custom model…" option still accepts any identifier.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>The Scan widget now actually deploys.</strong> 0.19.0's Cloud build failed because the widget extension's <code>CFBundleVersion</code> (1) didn't match the app's — the extension now tracks the app's <code>MARKETING_VERSION</code>/<code>CURRENT_PROJECT_VERSION</code>, so it passes App Store export and reaches TestFlight.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-19-0">0.19.0 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>First Home Screen widget: "Scan Odometer"</strong> (small) — tap it to jump straight into mileage entry, via a <code>garagebuddy://scan</code> deep link. This is Slice 1 of the widget work: it stands up the widget extension target and proves the build/sign/ deploy path with minimal risk (no shared data yet).</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Adds a WidgetKit app-extension (<code>com.shuffman.carlog.widgets</code>) embedded in the app, and a <code>garagebuddy://</code> URL scheme. Data-backed widgets (reminders, fleet snapshot, miles sparkline) need a shared App Group and come in Slice 2.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-18-0">0.18.0 <span class="ver-date">2026-07-08</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Much better odometer/gas-pump/receipt OCR.</strong> Two root causes addressed:
+    <ul>
+      <li><strong>Model:</strong> the default AI model was Haiku 4.5 — the weakest vision tier. Default is now <strong>Claude Opus 4.8</strong> (high-resolution vision, far stronger OCR). Anyone still on the old Haiku default is auto-upgraded; you can still choose a cheaper model in Settings → AI.</li>
+      <li><strong>Image handling:</strong> scan photos are now sent <strong>upright</strong> (baking in camera orientation so the model never gets a sideways image) and at <strong>higher JPEG quality</strong>, instead of a heavily-compressed frame.</li>
+    </ul>
+  </li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Opus costs more per scan than Haiku, but a scan is one image + a tiny response (well under a cent). For best results, frame the odometer so it fills the shot.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-17-0">0.17.0 <span class="ver-date">2026-07-07</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>New "Odometer Check" category</strong> for plain mileage readings — and it's now the <strong>default</strong> for new entries (the most common action).</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Existing <strong>"Other" entries can be reclassified</strong> to Odometer Check in one tap: Settings → Data shows "Reclassify N ‘Other’ as Odometer Check" whenever any "Other" entries exist. (Opt-in, so it never silently changes data; the row disappears once none remain.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-16-0">0.16.0 <span class="ver-date">2026-07-07</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>App name is now "Garage Buddy"</strong> (was briefly "Garage Manager"). Updated the Home Screen name and all in-app product references. App Store Connect listing is "Garage Buddy: Car Tracker" (the bare names were taken).</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-15-0">0.15.0 <span class="ver-date">2026-07-07</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Renamed the app to "Garage Manager."</strong> The Home Screen name (<code>CFBundleDisplayName</code>) and in-app product references (PDF report title, Settings privacy note, Siri/Shortcut descriptions, permission messages) now say Garage Manager. Siri phrases follow the display name automatically.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Bundle id, internal module name, and the Google Sheet/Drive names (<code>Car Log Data</code>, <code>Car Log Attachments</code>) are unchanged, so existing data and the TestFlight app lineage are preserved. The App Store Connect app name is managed separately in App Store Connect.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-14-3">0.14.3 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Scanned/attached files are now named with an <strong>ISO-8601 date</strong> (<code>Receipt 2026-06-21.pdf</code>), using the <strong>date the work was performed</strong> — for receipts the OCR now runs before the file is named/uploaded, so the receipt's own date is used rather than today's.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-14-2">0.14.2 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>When several cars share the same canonical year/make/model, their attachment folders are disambiguated with a <code>.1/.2/.3</code> suffix (stable by creation order), e.g. <code>2001 Porsche Carrera.1</code>. A car with a unique name stays unsuffixed.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-14-1">0.14.1 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Per-car attachment folders now use the <strong>canonical year/make/model</strong> name (e.g. <code>2001 Porsche Carrera</code>) rather than the car's custom display name.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-14-0">0.14.0 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Attachments are now organized per car in Drive.</strong> New uploads go into a subfolder named for the car, inside "Car Log Attachments" (e.g. <code>Car Log Attachments/996 Carrera Cab/</code>). Files are still located by id in the sheet, so this is purely for tidier browsing in Drive.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Existing attachments already uploaded stay in the top-level folder; only new uploads are foldered. (A one-time migration of existing files can be added if wanted.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-13-0">0.13.0 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Long-press an attachment</strong> for a menu: <strong>Delete</strong>, and (on a transaction) <strong>Extract Details (OCR)</strong> to re-read an already-saved attachment — including PDFs added earlier — and pre-fill the entry. Attachments on the car's Documents list can be deleted the same way.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Attachment delete moved from a swipe action to the long-press menu.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-12-1">0.12.1 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Scanned PDFs were corrupt / wouldn't open.</strong> The PDF context was finalized in a <code>defer</code> that ran after the bytes were already read, so the file was missing its trailer. It's now finalized before the data is returned.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-12-0">0.12.0 <span class="ver-date">2026-07-05</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Scan multi-page receipts.</strong> "Scan Document" in a transaction's attachments uses the system document scanner to capture several pages, combined into a single PDF attachment (instead of loose images).</li>
+  <li><strong>AI receipt reading.</strong> If an AI key is configured, a scanned receipt is read to pre-fill the entry's <strong>total, date, and category</strong>, with a <strong>brief summary written into the notes</strong>. Best-effort — you verify before saving; the PDF is attached either way.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><code>AIVisionService</code> now supports multi-image prompts (used for multi-page receipts) via a new <code>scanReceipt</code>.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-11-0">0.11.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Reminders per car.</strong> Each car has a Reminders section: add date-based renewals (registration, insurance, inspection) or mileage-based service (oil every N miles). Reminders can repeat, and "Done" rolls a repeating one forward to its next due date/mileage.</li>
+  <li><strong>Local notifications</strong> for date reminders (morning-of). Permission is only requested once you actually have a date reminder to schedule. Mileage reminders are tracked in-app against the current odometer (mileage can't be time-scheduled).</li>
+  <li><strong>Garage badges</strong> now include reminders: a red bell for an overdue reminder, orange for due-soon — prioritised alongside the existing odometer/stale flags.</li>
+  <li>New spreadsheet tab <strong><code>Reminders</code></strong>, auto-created on connect for existing spreadsheets.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-10-0">0.10.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Photo &amp; PDF attachments on transactions.</strong> Add receipts, titles, and service records to an entry (take a photo, choose from library, or pick a PDF). Files upload to a "Car Log Attachments" folder in your Drive; tap any attachment to preview it (QuickLook).</li>
+  <li><strong>Documents on the car screen.</strong> A car aggregates all attachments across its transactions into one Documents section.</li>
+  <li>New spreadsheet tab <strong><code>Attachments</code></strong> (<code>attachment_id, txn_id, kind, file_id, name, created_at</code>), created automatically on connect for existing spreadsheets.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Uses the existing <code>drive.file</code> scope (no new sign-in consent). Deleting an attachment also removes the underlying Drive file.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-9-0">0.9.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Cost per mile &amp; spend breakdown</strong> on each car — operating cost per mile (excludes purchase price), total spent, and spend by category.</li>
+  <li><strong>Data-quality guardrails.</strong> The Garage flags cars that need attention: an odometer <strong>rollback</strong> (a later reading lower than an earlier one) and a <strong>stale</strong> car (active but not logged in 30+ days), shown as a badge in the list and a banner on the car's screen.</li>
+  <li><strong>Search &amp; filter</strong> a car's history by text and by category.</li>
+  </ul>
+  <h3 class="cat cat-notes">Notes</h3>
+  <ul>
+  <li>Cost-per-mile and the guardrails honour the "0 = unknown starting mileage" rule when measuring miles driven.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-8-1">0.8.1 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li>Each car's page in the PDF report now includes its miles-per-month chart.</li>
+  </ul>
+  <h3 class="cat cat-removed">Removed</h3>
+  <ul>
+  <li>The redundant "Log Entry for This Car" button on a car's screen — the floating + button already defaults to the car you're viewing.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-8-0">0.8.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>VIN, purchase price, and sale price</strong> on each car. Purchase price is entered in the car's Ownership section; VIN in the Vehicle section; sale price appears when a car is retired (sold). The car's detail screen and the PDF report show these, plus <strong>profit</strong> (sale − purchase) for sold cars.</li>
+  <li>New spreadsheet columns <code>vin</code>, <code>purchase_price</code>, <code>sale_price</code>. <strong>Existing spreadsheets are migrated automatically</strong> on connect: missing columns are appended without disturbing existing columns, order, or data.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>Header handling is now non-destructive (<code>ensureColumns</code> appends only missing headers), replacing the previous full-row rewrite — safe to run on reordered or hand-edited sheets.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-7-0">0.7.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Current-month estimate on the mileage chart.</strong> Since miles only appear once a reading brackets them, the newest month always looked empty. The chart now projects each active car's likely miles since its last reading (at its average measured daily rate) so the current period isn't blank. These bars are rendered faded and labelled "estimates projected from recent use" so they're clearly not measured data. Applies to the dashboard and per-car charts; the PDF report shows measured data only.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>A starting mileage of 0 is treated as "unknown."</strong> Previously a car with no entered starting mileage had its entire odometer counted as miles driven and smeared back from its acquired date (e.g. a used car showing tens of thousands of fabricated miles). Now mileage for such a car is anchored from its first real reading instead.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-6-0">0.6.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>PDF export of the whole garage.</strong> An Export button on the Garage screen produces a multi-page report: a title page with the fleet overview and the miles-per-month chart, then one page per car listing its transactions. Long histories paginate automatically.</li>
+  <li><strong>Per-car mileage chart.</strong> Each car's Garage detail now shows a miles-per-month chart for just that vehicle.</li>
+  <li><strong>Quick-add remembers the car you're viewing.</strong> Opening the quick-add (+) while looking at a car in the Garage pre-selects that car, and treats it as your explicit choice so a photo scan won't reassign it.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Duplicate transactions from a double-tap.</strong> Saving a new entry now reuses one stable id and ignores repeat taps while the save is in flight, so a fast double-tap updates one record instead of writing two rows.</li>
+  <li><strong>Defensive de-duplication on load.</strong> Rows identical in every meaningful field (car, date, odometer, category, amounts, notes) are collapsed to one when reading the sheet, cleaning up any duplicates already written. Genuinely distinct entries (e.g. two fills the same day) are preserved.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-5-0">0.5.0 <span class="ver-date">2026-07-04</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Tappable chart legend.</strong> The mileage and expenses charts now have a custom interactive legend — tap a car to isolate it in the chart, tap again to clear the filter and show all cars. Car colors stay stable, and the legend scrolls horizontally to fit many cars.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Chart bars no longer collapse into a single month.</strong> Transaction dates that Google Sheets stored as date-time cells came back space-separated (e.g. <code>2026-01-15 8:00:00</code>, <code>1/15/2026 8:00:00</code>) and weren't recognized, so each fell back to its row's creation time and piled onto one recent bar. The lenient date reader now understands these space-separated date-time formats, so each entry keeps its real date. (Fixes #1.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-4-1">0.4.1 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Hand-edited dates no longer jump to "today."</strong> Reading a date from the sheet was strict RFC3339 only, so any other format silently fell back to the current date — quietly relocating a transaction (and its mileage/expense bars) onto the current month. Date cells are now parsed leniently: RFC3339 (with or without fractional seconds), plain calendar dates (<code>2026-06-28</code>, <code>2026/06/28</code>, <code>6/28/2026</code>), and Google Sheets' own serial date numbers are all accepted. A transaction whose date still can't be read falls back to when its row was created rather than today. (ARCHITECTURE.md ADR-009.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-4-0">0.4.0 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Spreadsheet columns are now matched by header name, not position.</strong> You can reorder the columns in the <code>Cars</code>/<code>Transactions</code> tabs, and any extra columns you add are ignored on read and preserved when the app updates a row. The contract is now "don't rename/delete the known headers" instead of "don't reorder." (ARCHITECTURE.md ADR-009.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-3-1">0.3.1 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>On-device odometer OCR accuracy</strong> — the biggest fix: camera photos were handed to Vision without their rotation, so portrait shots were read sideways. Vision now receives the correct image orientation.</li>
+  <li><strong>Thousands separators</strong> no longer fragment a reading (e.g. <code>128,456</code> was split into <code>128</code> and <code>456</code>); grouped digits are kept intact.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>When several numbers are equally plausible, the <strong>larger (more prominent)</strong> digits on screen now win — usually the odometer rather than the clock or trip meter.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-3-0">0.3.0 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Landscape chart mode</strong> — rotate the phone on the Dashboard for a focused, full-width chart with room for many months.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Chart x-axis crowding</strong> — month labels now thin out as the range grows (every 2nd/3rd/6th month) instead of overlapping, and show the year when the range spans more than one calendar year.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-2-0">0.2.0 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Fast entry</strong>: Home Screen Quick Actions (long-press the app icon) plus App Shortcuts surfaced in Siri, Spotlight, the Shortcuts app, and the Action Button — "Scan Odometer" (opens straight to the camera) and "Log Entry".</li>
+  <li><strong>On-device odometer OCR</strong> using Apple's Vision framework — free, private, offline, and works with no API key. A Settings toggle chooses on-device vs AI.</li>
+  <li><strong>Closest-mileage car guessing</strong>: a scanned reading is matched to the car whose last mileage is nearest (and the right number is picked from the photo).</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Mileage is distributed over time</strong>: miles between two readings spread across the intervening months (proportional to time), and the first reading spreads from the car's acquired date — so usage is never lumped into a single month.</li>
+  <li><strong>Charts</strong>: abbreviated month labels (e.g. "Jun") and a rolling ~6-month x-axis window so sparse data still reads clearly.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v0-1-0">0.1.0 <span class="ver-date">2026-06-28</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li>Car management (the Garage): add/edit, retire/reactivate, starting mileage for used cars; scales to 10+ cars.</li>
+  <li>Transaction logging: odometer + category + optional cost/gallons, edit/delete, per-car history, plausibility warning on low readings.</li>
+  <li><strong>Google Sheets backend</strong>: sign in with Google (<code>drive.file</code> scope), per-user <code>Car Log Data</code> spreadsheet with Cars and Transactions tabs.</li>
+  <li><strong>Dashboard</strong> (Swift Charts): stacked mileage by car, expenses, MPG, summary cards, recent activity.</li>
+  <li><strong>AI photo capture</strong>: odometer + gas-pump reading via the user's own API key (Anthropic default, OpenAI-compatible option).</li>
+  <li>App icon, privacy policy, pull-to-refresh.</li>
+  </ul>
+</section>
+</details>
+
+<footer>
+  <p>Garage Buddy &middot; <a href="/support">Support</a> &middot;
+  <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms</a><br>
+  An <a href="https://odhllc.com">ODH LLC</a> app.</p>
+</footer>
+
+</body>
+</html>
