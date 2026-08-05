@@ -26,10 +26,32 @@ directly will be silently overwritten the next time it's regenerated. Change
 
 ## Serving
 
-Caddy in a container (`Dockerfile` + `Caddyfile`), deployed on Railway.
-`try_files` provides clean URLs, so `/privacy` and `/privacy.html` both work.
-Railway injects `$PORT`; TLS for the custom domain is handled at Railway's edge,
-so `auto_https` is off.
+The same `site/` directory is published to **two** places. Both are live;
+neither depends on the other.
+
+### GitHub Pages — `garage-buddy.app` (primary)
+
+`.github/workflows/pages.yml` uploads `site/` on every push to `main`. TLS is
+GitHub's (Let's Encrypt), issued automatically for the custom domain.
+
+`site/CNAME` pins the domain. **Don't delete it** — GitHub rewrites the repo's
+Pages domain setting from this file on each deploy, so removing it unsets the
+custom domain.
+
+Clean URLs work without configuration: Pages resolves `/privacy` to
+`privacy.html` on its own, so no `try_files` equivalent is needed.
+
+**Pages cannot set HTTP headers.** The `header` block in the `Caddyfile`
+(`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`) applies to the
+Railway deploy only — those headers are simply absent on `garage-buddy.app`.
+There is no way to add them on GitHub Pages; moving to Cloudflare Workers
+(`_headers` file) is the only fix if they're ever required.
+
+### Railway + Caddy — `garagebuddy.fulgent.org` (legacy)
+
+Caddy in a container (`Dockerfile` + `Caddyfile`). `try_files` provides clean
+URLs. Railway injects `$PORT`; TLS is handled at Railway's edge, so
+`auto_https` is off.
 
 Local check (needs Docker running):
 
@@ -39,7 +61,16 @@ docker run --rm -e PORT=8080 -p 8099:8080 gb-site
 curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8099/privacy   # expect 200
 ```
 
-## Domain
+This deploy is kept because the **App Store Connect privacy and support URLs
+still point at it**. Retire it only after those are switched to
+`garage-buddy.app` and a new build has been reviewed against the new URLs.
 
-`garagebuddy.fulgent.org` — Railway service + DreamHost DNS, wired with the
-`register-domain` skill. Re-running that skill is safe; DNS records are upserted.
+## Domains
+
+| Domain | Host | DNS |
+|---|---|---|
+| `garage-buddy.app` | GitHub Pages | DreamHost — apex `A`/`AAAA` to GitHub, `www` `CNAME` to `shuffman.github.io` |
+| `garagebuddy.fulgent.org` | Railway | DreamHost — wired with the `register-domain` skill |
+
+`.app` is on the HSTS preload list, so `garage-buddy.app` is HTTPS-only in
+browsers — there is no plain-HTTP fallback while a certificate is provisioning.
