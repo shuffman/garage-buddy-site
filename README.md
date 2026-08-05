@@ -78,8 +78,18 @@ still point at it**. Retire it only after those are switched to
 
 | Domain | Host | DNS |
 |---|---|---|
-| `garage-buddy.app` | GitHub Pages | DreamHost — apex `A`/`AAAA` to GitHub, `www` `CNAME` to `shuffman.github.io` |
+| `garage-buddy.app` | GitHub Pages | **Cloudflare** — apex `A`/`AAAA` to GitHub, `www` `CNAME` to `shuffman.github.io` |
 | `garagebuddy.fulgent.org` | Railway | DreamHost — wired with the `register-domain` skill |
+
+`garage-buddy.app` DNS moved off DreamHost 2026-08-04: DreamHost's DNS API
+returns `no_such_zone` for newly registered domains until the zone is
+provisioned by hand in their panel. `fulgent.org` is unaffected and stays on
+DreamHost — it's a long-established zone the API can already manage.
+
+**Cloudflare records must stay DNS-only (grey cloud).** A proxied record breaks
+GitHub's HTTP-01 challenge, so the certificate never issues — and because
+`.app` is HSTS-preloaded, no certificate means the site is flatly unreachable
+rather than merely insecure.
 
 `.app` is on the HSTS preload list, so `garage-buddy.app` is HTTPS-only in
 browsers — there is no plain-HTTP fallback while a certificate is provisioning.
