@@ -47,6 +47,26 @@ left the Pages `cname` setting at `null` until it was set explicitly via the
 API. (The file *is* honoured by the legacy branch build, which is where the
 "just commit a CNAME" advice comes from.)
 
+### Set the domain AFTER DNS points at GitHub
+
+Order matters. If the custom domain is set while DNS still points elsewhere,
+validation fails, GitHub never requests a Let's Encrypt certificate, and it does
+**not** retry on any useful timescale — `https_certificate` stays absent from
+the API response entirely and HTTPS serves GitHub's default cert, failing with
+`no alternative certificate subject name matches target host name`.
+
+Re-`PUT`ting the same `cname` does not fix it. Clear the domain and set it
+again:
+
+```sh
+echo '{"cname":null}' | gh api -X PUT repos/shuffman/garage-buddy-site/pages --input -
+gh api -X PUT repos/shuffman/garage-buddy-site/pages -f cname=garage-buddy.app
+```
+
+The certificate then moves `authorization_pending` → `authorized` → `approved`
+within about a minute. Enable enforcement afterwards with
+`-F https_enforced=true`.
+
 Clean URLs work without configuration: Pages resolves `/privacy` to
 `privacy.html` on its own, so no `try_files` equivalent is needed.
 
