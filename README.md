@@ -45,6 +45,44 @@ is HTML-escaped and passes through as literal text rather than breaking.
 different config block, for the same reason `style.css` is: two self-contained
 repos beat a shared package for something this small.
 
+## The odometer hero
+
+`site/odometer.js` draws the landing page's opening element: an odometer whose
+drums roll and settle right-to-left, the ones place spinning longest. The app's
+first move is photographing an odometer and reading the number off it, so the
+page opens with that rather than with a paragraph.
+
+The reading (`087421`) is **illustrative, not real data**. Reduced-motion users
+get the settled reading immediately with no roll.
+
+## Screenshots — the biggest remaining gap
+
+There are currently **no images on this site**. That's the single largest
+reason it reads as plain; typography can't substitute for showing the app.
+
+`.shots` styles are already in `style.css` and need no changes — export the
+images, drop them in `site/shots/`, and add the markup:
+
+```html
+<ul class="shots">
+  <li><img src="/shots/fleet.png" alt="The garage list, showing four cars with their mileage">
+      <p class="shot-label">Your garage</p></li>
+  <li><img src="/shots/costs.png" alt="Cost per mile chart across a year">
+      <p class="shot-label">What each car costs</p></li>
+</ul>
+```
+
+Worth exporting, in rough priority order:
+
+1. **The garage / fleet list** — the multi-car premise, in one glance
+2. **A cost chart** — spend by category or cost per mile, the payoff screen
+3. **Odometer capture** — the scan-in-progress, which ties to the hero
+4. **A reminder** — service due by date or mileage
+
+Use a single simulator device for all of them so the frames match, take them at
+2x or 3x, and keep them under ~300 KB each. Alt text is not optional — App
+Review aside, these pages should be readable without images.
+
 ## Privacy policy is generated — don't hand-edit
 
 `site/privacy.html` is generated from `PRIVACY.md` in the **app** repo
