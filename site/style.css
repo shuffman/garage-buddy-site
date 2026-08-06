@@ -1,121 +1,317 @@
+/* ─────────────────────────────────────────────────────────────
+   Brand — the ONLY per-site block. Everything below is shared
+   byte-for-byte across odhllc-site, garage-buddy-site and
+   workout-buddy-site.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --accent: #0a5fc2;        /* Garage Buddy blue */
+  --accent-lift: #6cb2ff;   /* the dark-mode counterpart */
+}
+
+/* ── Tokens ─────────────────────────────────────────────────── */
+
 :root {
   color-scheme: light dark;
-  --bg: #ffffff;
-  --fg: #1c1c1e;
-  --muted: #6b6b70;
-  --rule: rgba(0, 0, 0, .10);
-  --accent: #0a63c9;
-  --card: #f6f6f7;
+
+  --bg: #fcfcfd;
+  --surface: #f2f3f6;
+  --fg: #15161a;
+  --muted: #676a74;
+  --rule: rgba(18, 20, 28, .10);
+
+  /* No web fonts, deliberately: these apps make no network calls
+     and collect nothing, so the site shouldn't fetch a typeface
+     from a third party to say so. Three system roles instead. */
+  --font-display: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+                  system-ui, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+               sans-serif;
+  --font-data: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+               monospace;
+
+  --measure: 42rem;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131315;
-    --fg: #e8e8ea;
-    --muted: #9a9aa1;
-    --rule: rgba(255, 255, 255, .14);
-    --accent: #6cb2ff;
-    --card: #1c1c1f;
+    --bg: #0f1013;
+    --surface: #191a1f;
+    --fg: #e8e9ee;
+    --muted: #93959f;
+    --rule: rgba(255, 255, 255, .12);
+    --accent: var(--accent-lift);
   }
 }
 
 * { box-sizing: border-box; }
 
+/* ── Base ───────────────────────────────────────────────────── */
+
 body {
   margin: 0 auto;
-  max-width: 44rem;
-  padding: 3rem 1.25rem 5rem;
+  max-width: var(--measure);
+  padding: 0 1.35rem 6rem;
   background: var(--bg);
   color: var(--fg);
-  font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-h1 { font-size: clamp(1.6rem, 5vw, 2.1rem); line-height: 1.15; margin: 0 0 .35rem; letter-spacing: -.02em; }
-h2 { font-size: 1.15rem; margin: 2.25rem 0 .6rem; letter-spacing: -.01em; }
-h3 { font-size: 1rem; margin: 1.5rem 0 .35rem; }
-p, li { color: var(--fg); }
-ul { padding-left: 1.2rem; }
-li { margin: .4rem 0; }
+/* Sticky nav sits flush to the viewport, so anchored headings
+   need to clear it when jumped to. */
+[id] { scroll-margin-top: 4.5rem; }
 
-a { color: var(--accent); text-underline-offset: 2px; }
-a:hover { text-decoration: none; }
+/* ── Type scale ─────────────────────────────────────────────── */
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.028em;
+  margin: .6rem 0 .5rem;
+}
+
+/* The signature: every section is marked like a gauge — a hairline
+   across the measure, broken by a short accent tick at the index
+   point. On release notes the same device marks each version. */
+h2 {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -.018em;
+  margin: 3.2rem 0 .85rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+
+h2::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 1.85rem;
+  height: 2px;
+  background: var(--accent);
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -.006em;
+  margin: 1.8rem 0 .3rem;
+}
+
+p, li { margin: .75rem 0; }
+ul { padding-left: 1.15rem; }
+li { margin: .5rem 0; }
+li::marker { color: var(--muted); }
+
+strong { font-weight: 650; }
+
+.tagline {
+  color: var(--muted);
+  font-size: 1.02rem;
+  margin: 0 0 2.2rem;
+}
+
+.lede {
+  font-size: 1.12rem;
+  line-height: 1.6;
+  letter-spacing: -.008em;
+}
 
 code {
-  font: .875em ui-monospace, SFMono-Regular, Menlo, monospace;
-  background: var(--card);
-  padding: .12em .38em;
+  font-family: var(--font-data);
+  font-size: .86em;
+  background: var(--surface);
+  padding: .13em .4em;
   border-radius: 5px;
 }
 
-.tagline { color: var(--muted); font-size: 1.05rem; margin: 0 0 2rem; }
-.lede { font-size: 1.05rem; }
+/* ── Links ──────────────────────────────────────────────────── */
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  transition: text-decoration-color .15s ease;
+}
+
+a:hover { text-decoration-color: currentColor; }
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* A heading that happens to be a link is still a heading — it gets
+   the accent, not the underline, until you reach for it. */
+h1 a, h2 a, h3 a { text-decoration: none; }
+h1 a:hover, h2 a:hover, h3 a:hover {
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+}
+
+/* ── Nav ────────────────────────────────────────────────────── */
 
 nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  gap: 1.25rem;
-  padding-bottom: 1.25rem;
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1.15rem;
+  margin: 0 0 2.6rem;
+  padding: 1.3rem 0 .95rem;
   border-bottom: 1px solid var(--rule);
-  font-size: .95rem;
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
+  font-size: .93rem;
 }
-nav a { color: var(--muted); text-decoration: none; }
-nav a:hover, nav a[aria-current="page"] { color: var(--fg); }
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+nav a:first-child {
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -.014em;
+  color: var(--fg);
+  margin-right: auto;   /* brand left, sections right */
+}
+
+nav a:hover { color: var(--fg); }
+
+nav a[aria-current="page"] {
+  color: var(--fg);
+  font-weight: 550;
+}
+
+/* ── Card ───────────────────────────────────────────────────── */
 
 .card {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 1.1rem 1.25rem;
-  margin: 1.25rem 0;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 1.25rem 1.4rem;
+  margin: 1.5rem 0;
 }
+
 .card p:first-child { margin-top: 0; }
 .card p:last-child { margin-bottom: 0; }
+.card h3:first-child { margin-top: 0; }
 
-footer {
-  margin-top: 3.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--rule);
-  color: var(--muted);
-  font-size: .875rem;
-}
-footer a { color: var(--muted); }
+/* ── Release notes ──────────────────────────────────────────── */
+/* Generated by scripts/gen_release_notes.py — style only, no
+   markup changes, so the page never needs regenerating for a
+   design tweak. */
 
-/* Release notes — generated by scripts/gen_release_notes.py */
+.release { margin: 0 0 2.4rem; }
 
-.release { margin: 2.5rem 0; }
+/* The version is data, so it's set as data. */
 .release h2 {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: .55rem;
-  margin: 0 0 .5rem;
-  padding-bottom: .4rem;
-  border-bottom: 1px solid var(--rule);
+  gap: .7rem;
+  font-family: var(--font-data);
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  margin: 2.6rem 0 .6rem;
 }
+
 .ver-date {
-  color: var(--muted);
-  font-size: .8rem;
+  font-family: var(--font-data);
+  font-size: .76rem;
   font-weight: 400;
   letter-spacing: 0;
-}
-.release .cat {
-  margin: 1.15rem 0 .3rem;
-  font-size: .72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .07em;
   color: var(--muted);
 }
-.release ul { margin: .3rem 0; }
-.release ul ul { margin: .45rem 0 .2rem; }
+
+/* Added / Fixed / Changed is a real taxonomy people scan by, so it
+   gets a label — but no colour. The accent is spent on the tick. */
+.release .cat {
+  font-family: var(--font-data);
+  font-size: .69rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin: 1.4rem 0 .1rem;
+}
+
+.release ul { margin: .35rem 0; }
+.release ul ul { margin: .5rem 0 .25rem; }
+.release li { margin: .55rem 0; }
 
 details.early { margin-top: 3.5rem; }
+
 details.early > summary {
   cursor: pointer;
-  padding: .85rem 0;
+  padding: .9rem 0;
   border-top: 1px solid var(--rule);
   color: var(--muted);
-  font-size: .9rem;
+  font-size: .92rem;
+  list-style: none;
 }
+
+details.early > summary::-webkit-details-marker { display: none; }
+
+details.early > summary::before {
+  content: "+  ";
+  font-family: var(--font-data);
+  color: var(--accent);
+}
+
+details.early[open] > summary::before { content: "\2212  "; }
 details.early > summary:hover { color: var(--fg); }
-details.early[open] > summary { margin-bottom: .5rem; }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+
+footer {
+  margin-top: 4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--rule);
+  color: var(--muted);
+  font-size: .87rem;
+  line-height: 1.6;
+}
+
+footer a { color: var(--muted); }
+footer a:hover { color: var(--fg); }
+
+/* ── Quality floor ──────────────────────────────────────────── */
+
+@media (max-width: 32rem) {
+  body { font-size: 16.5px; padding-bottom: 4rem; }
+  nav { gap: .9rem; font-size: .88rem; }
+  nav a:first-child { flex-basis: 100%; margin-right: 0; }
+  h2 { margin-top: 2.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  nav, details.early { display: none; }
+  body { max-width: none; color: #000; background: #fff; font-size: 11pt; }
+  a { color: #000; text-decoration: underline; }
+  h2 { break-after: avoid; }
+  .release { break-inside: avoid; }
+}
