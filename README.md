@@ -49,7 +49,7 @@ repos beat a shared package for something this small.
 ## The features page is hand-written — check it on feature releases
 
 `site/features.html` documents every feature, written by reading the app's
-screens and models (last checked against **1.9.1**, and garage-buddy-web as of its 1.9.1 parity work). Unlike the release notes
+screens and models (last checked against **1.10.1**, and garage-buddy-web as of its 1.9.1 parity work). Unlike the release notes
 it isn't generated, so it drifts: when a release adds, removes or renames
 something user-visible, update the matching section. UI labels in bold are
 quoted from the app, so a renamed button is worth a grep here.
@@ -67,40 +67,52 @@ page opens with that rather than with a paragraph.
 The reading (`087421`) is **illustrative, not real data**. Reduced-motion users
 get the settled reading immediately with no roll.
 
-## Screenshots — the biggest remaining gap
+## Screenshots are captured from sample data — never by hand
 
-There are currently **no images on this site**. That's the single largest
-reason it reads as plain; typography can't substitute for showing the app.
+`site/shots/*.webp` come from `scripts/capture_screenshots.sh`, which builds the
+iOS app, launches it in a dedicated simulator ("GB Site Shots") with
+`-seedSampleData`, and captures the web app's `?demo=1` fleet with headless
+Chrome. Re-run it after a release that changes what those screens look like:
 
-`.shots` styles are already in `style.css` and need no changes — export the
-images, drop them in `site/shots/`, and add the markup:
-
-```html
-<ul class="shots">
-  <li><img src="/shots/fleet.png" alt="The garage list, showing four cars with their mileage">
-      <p class="shot-label">Your garage</p></li>
-  <li><img src="/shots/costs.png" alt="Cost per mile chart across a year">
-      <p class="shot-label">What each car costs</p></li>
-</ul>
+```sh
+scripts/capture_screenshots.sh
+APP_REPO=/path/to/garage-buddy scripts/capture_screenshots.sh   # a branch/worktree
 ```
 
-Worth exporting, in rough priority order:
+**Sample data only.** The Mac App Store listing once shipped a real garage
+because a capture picked up live data. Before committing, look at every image:
+the phone shots must show the ten sample cars (Daily Civic … Old Accord), the
+web shots the demo fleet (The wagon, 2019 Toyota Tacoma, Commuter).
 
-1. **The garage / fleet list** — the multi-car premise, in one glance
-2. **A cost chart** — spend by category or cost per mile, the payoff screen
-3. **Odometer capture** — the scan-in-progress, which ties to the hero
-4. **A reminder** — service due by date or mileage
+The app-side launch arguments the script needs — a deterministic
+`-seedSampleData`, `-openCar <name>` and `-quickActionLog` — were added on the
+app repo's `screenshot-open-car` branch (2026-09-16). Until that is merged,
+point `APP_REPO` at a checkout of it.
 
-Use a single simulator device for all of them so the frames match, take them at
-2x or 3x, and keep them under ~300 KB each. Alt text is not optional — App
-Review aside, these pages should be readable without images.
+Known quirks, both from how the demo runs rather than the pages:
+- The Reports shot shows a **Syncing** chip: `-seedReports` queues uploads a
+  seeded run never sends. It's used on the features page only, not the landing
+  page.
+- Web demo car `car-0` ("The wagon") has a deliberate odometer typo, so the
+  script looks up the Tacoma by name instead.
+
+Phone shots are published at 600px wide, web shots at 1280px, as WebP (~20–40
+KB each). Markup is a `ul.shots` with `shots--phone` or `shots--wide`; alt text
+is not optional.
 
 ## Privacy policy is generated — don't hand-edit
 
 `site/privacy.html` is generated from `PRIVACY.md` in the **app** repo
-(`~/Projects/garage-buddy`), which is the source of truth. Editing the HTML
-directly will be silently overwritten the next time it's regenerated. Change
-`PRIVACY.md`, regenerate, and commit both.
+(`~/Projects/garage-buddy`), which is the source of truth and covers the app
+*and* `web.garage-buddy.app`. Change `PRIVACY.md`, then:
+
+```sh
+python3 scripts/gen_privacy.py            # reads ../garage-buddy/PRIVACY.md
+```
+
+and commit both. The script shares `inline()` and the nav with
+`gen_release_notes.py`. Until 2026-09-16 there was no script — the page had
+been converted once by hand and was two months behind the policy.
 
 ## Serving
 

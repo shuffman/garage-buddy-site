@@ -19,9 +19,40 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.9.1</strong> &middot; 2026-09-15</p>
+<p class="tagline">Current version <strong>1.10.1</strong> &middot; 2026-09-16</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-10-1">1.10.1 <span class="ver-date">2026-09-16</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Moving your data to Google no longer loses your car values.</strong> 1.10.0's own fix for cross-client edits accidentally made the migration write every car with a blank "Your value" and no estimate history — into a sheet it had just cleared, with the on-device copy deleted straight after. Unrecoverable. If you ran a move to Google on 1.10.0, check your values.</li>
+  <li><strong>"Update Estimates" no longer wipes a value you set on the web.</strong> The AI refresh was writing the price column as well as the estimates, and it only runs on cars it thinks have no price — which is exactly when another device has just set one.</li>
+  <li><strong>Plug-in hybrids get their MPG back.</strong> 1.10.0 started treating a charge as a break in the petrol chain (and a fill as a break in the charging chain), so a car that does both reported far worse economy than it gets.</li>
+  <li>A queued offline car edit no longer restores its own stale value over a newer one when it replays.</li>
+  <li>A document deleted on another device no longer reappears when a queued rename replays.</li>
+  <li>Renaming a file from the rename sheet no longer strips a dot-suffix that isn't really an extension — the sheet had its own copy of the old rule.</li>
+  <li>The expenses drill-down now ends where its bar does, like mileage already did.</li>
+  <li>An AI estimate that fails offline no longer promises to sync later.</li>
+  <li>On-device mode no longer reports itself "offline" when a read fails; there is nothing to be offline from.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-10-0">1.10.0 <span class="ver-date">2026-09-16</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Editing a car on the phone no longer wipes a value you set on the web.</strong> Every save wrote the whole row from the phone's copy, so renaming or retiring a car blanked "Your value" if the web had set it since the phone last read — the garage total silently reverting to the AI estimate. A save now writes only what it changes. Same for renaming a document versus marking it as from a previous owner: those two used to undo each other, with no conflict check at all on that sheet.</li>
+  <li><strong>"Missed a fill-up before this" works on a cost-only entry.</strong> Gallons are optional, and an entry without them was dropped from the economy chain before the flag was ever read — so the next fill was measured straight across the unlogged fuel and could read double the real MPG. A fuel stop with no amount now breaks the chain whether or not you tick the box.</li>
+  <li><strong>A cost dated next month no longer inflates a car's bar.</strong> Pre-pay a registration and the per-car bar counted it while the drill-down you get by tapping that bar stopped at this month, so the two didn't add up.</li>
+  <li><strong>On-device mode offers Try Again when a read fails</strong>, instead of an empty garage inviting you to add your first car on top of data that is still there.</li>
+  <li><strong>A failed first Google sign-in no longer says your access "expired or was revoked".</strong> It never existed, and Settings just repeated the same failure; the message now says sign-in failed and why.</li>
+  <li><strong>"Will sync as soon as you're back online" is only promised where it's true.</strong> Reference photos, AI estimates, document scans, opening a file and data moves aren't queued — they need doing again, and now say so.</li>
+  <li>Renaming a file whose name contains a dot but no real extension ("Invoice no.5") no longer invents one, giving you "Registration.5".</li>
+  <li>A deleted document no longer flickers back into the list when a refresh lands inside its 8-second Undo window.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-9-1">1.9.1 <span class="ver-date">2026-09-15</span></h2>
