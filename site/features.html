@@ -21,7 +21,8 @@
 <h1>Features</h1>
 <p class="tagline">Everything Garage Buddy does, screen by screen.</p>
 
-<p class="lede">Garage Buddy runs on iPhone, iPad and Mac. Almost everything
+<p class="lede">Garage Buddy runs on iPhone, iPad and Mac, and
+<a href="#web">in a web browser</a>. Almost everything
 works with no account and no network. A few features use AI with an API key
 you supply yourself; those are marked <span class="tag">AI key</span>, and the
 app works fine without them.</p>
@@ -44,6 +45,7 @@ app works fine without them.</p>
     <li><a href="#shortcuts">Widgets, Siri and shortcuts</a></li>
     <li><a href="#units">Units</a></li>
     <li><a href="#devices">iPad and Mac</a></li>
+    <li><a href="#web">On the web</a></li>
   </ul>
 </div>
 
@@ -459,6 +461,65 @@ is sized up for a desktop window, and reports open a normal save dialog.
 Where there's no camera, choose or paste photos instead.</p>
 <p>To see the same garage on several devices, use Google Drive mode and sign in
 with the same Google account on each one.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="web">On the web</h2>
+
+<p><a href="https://web.garage-buddy.app">web.garage-buddy.app</a> is Garage
+Buddy in a browser, for when you're at a computer without the app. It works
+with the <strong>same Google Drive spreadsheet</strong> as the app: log a
+fill-up in the browser and it shows on your phone, and the other way round.
+Sign in with the Google account you use in the app.</p>
+
+<p>It needs Google Drive mode. On-device data stays on the device that holds it,
+so to use the web version, first move your data to Google in the app
+(<em>Settings → Data</em>).</p>
+
+<h3>What it does</h3>
+<p>Most of the app, as of version 1.9.1:</p>
+<ul>
+  <li>The garage, each car's page, and the full log — add, edit and delete
+  entries, cars, reminders and to-dos</li>
+  <li>The Dashboard charts — Mileage, Total, Expenses and Economy, with the
+  same 1M to All ranges</li>
+  <li>The “Missed a fill-up” switch, and retiring sold cars</li>
+  <li>Receipts, documents and photos, including previous-owner records, with
+  Undo on delete</li>
+  <li>Units, and a 30-second refresh while the page is open</li>
+  <li>Offline use: your data is cached in the browser, and entries made with
+  no connection are sent when you're back online. Uploading files needs a
+  connection.</li>
+  <li><strong>Reports:</strong> every report the app saved to Drive is listed
+  and can be opened, renamed or deleted. The web version also makes the fleet
+  report's numbers and a car report as printable pages — print, or save as
+  PDF.</li>
+  <li><strong>Garage value:</strong> the app's estimates and garage total are
+  shown, and you can set your own value here.</li>
+  <li>Install it from your browser (“Add to Home Screen” or “Install app”) and
+  it opens in its own window.</li>
+</ul>
+
+<h3>What stays in the app</h3>
+<ul>
+  <li><strong>Anything that uses AI.</strong> The web version never calls an
+  AI provider, so your API key never goes into a browser. Value estimates,
+  document reading, service interval suggestions, the written fleet summary and
+  the vehicle-history packet are made in the app; whatever they save to Drive
+  then shows up on the web.</li>
+  <li><strong>Photo scanning.</strong> Odometers, pumps and receipts are typed
+  on the web.</li>
+  <li><strong>Reminder notifications.</strong> Reminders still show on the
+  Dashboard and each car's page, marked due soon or overdue.</li>
+  <li><strong>Widgets, Siri and the Action Button.</strong></li>
+</ul>
+
+<h3>How it handles your data</h3>
+<p>Like the app, the web version has no server of its own. The page signs in
+with Google in your browser and reads and writes your spreadsheet directly. It
+asks for the same narrow <code>drive.file</code> permission. Google's access
+token is kept only in memory and never saved; the browser remembers your email
+address so signing in again is quicker, and caches your garage so it opens
+instantly.</p>
 
 <footer>
   <p>Garage Buddy · <a href="/support">Support</a> ·

@@ -49,7 +49,7 @@ repos beat a shared package for something this small.
 ## The features page is hand-written — check it on feature releases
 
 `site/features.html` documents every feature, written by reading the app's
-screens and models (last checked against **1.9.1**). Unlike the release notes
+screens and models (last checked against **1.9.1**, and garage-buddy-web as of its 1.9.1 parity work). Unlike the release notes
 it isn't generated, so it drifts: when a release adds, removes or renames
 something user-visible, update the matching section. UI labels in bold are
 quoted from the app, so a renamed button is worth a grep here.
