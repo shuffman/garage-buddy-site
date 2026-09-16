@@ -11,6 +11,7 @@
 
 <nav>
   <a href="/">Garage Buddy</a>
+  <a href="/features">Features</a>
   <a href="/release-notes">Release Notes</a>
   <a href="/support" aria-current="page">Support</a>
   <a href="/privacy">Privacy</a>
@@ -29,6 +30,8 @@
 </div>
 
 <h2>Common questions</h2>
+
+<p>For a tour of everything the app does, see <a href="/features">Features</a>.</p>
 
 <h3>Do I need a Google account?</h3>
 <p>No. When you first open Garage Buddy you choose where your data lives. Pick
@@ -55,16 +58,41 @@ optional extra for difficult photos, and it uses an API key you supply from a
 provider you choose. There is no subscription and no in-app purchase.</p>
 
 <h3>Why is my fuel economy missing or wrong?</h3>
-<p>MPG is calculated between fill-ups, so a car needs at least two gas entries
-<em>with gallons recorded</em> before a figure appears. Entries saved without an
+<p>Economy is calculated between fill-ups, so a car needs at least two gas
+entries <em>with gallons recorded</em> (or two charging entries with kWh)
+before a figure appears. If fuel went in that you didn't log, turn on
+<strong>“Missed a fill-up before this”</strong> on the next entry so that gap
+isn't counted as one very efficient tank. Entries saved without an
 odometer reading are treated as “no reading” and are skipped by the mileage and
 economy calculations, which is why an entry can appear in your history without
 affecting the charts.</p>
 
 <h3>How do I get my data out?</h3>
-<p>Export a PDF report for a single car or the whole garage from the share
-button. In Google Drive mode your data is also always available as a normal
+<p>Open the <strong>Reports</strong> tab to make a PDF of a single car or the
+whole garage. Every report is saved, and can be shared again later from its
+menu. In Google Drive mode your data is also always available as a normal
 spreadsheet you can download, and Drive keeps its own version history.</p>
+
+<h3>Can I use it on my iPad or Mac?</h3>
+<p>Yes. Use Google Drive mode and sign in with the same Google account on each
+device, and they all show the same garage. While the app is open it checks for
+changes every 30 seconds. On-device mode keeps data on the one device that
+holds it.</p>
+
+<h3>Can I use kilometres and litres?</h3>
+<p>Yes, in <em>Settings → Units</em>. Distance, volume and fuel economy
+(MPG, km/L, L/100 km or gal/100 mi) are set separately. Units only change what
+is displayed; your stored data doesn't change.</p>
+
+<h3>What does AI add, and what does it cost?</h3>
+<p>AI is optional. With your own API key from Anthropic, Google or an
+OpenAI-compatible provider, it reads harder odometer photos, fills in receipts,
+pulls the VIN and renewal dates off documents, suggests service intervals,
+estimates what your cars are worth, and writes report summaries. You pay the
+provider directly; the app shows a rough cost per scan for each model, usually
+a cent or two or less. <em>Settings → AI → Test Models</em> compares models on
+your own photo. The <a href="/features#ai">features page</a> has the
+details.</p>
 
 <h3>I deleted the app — is my data gone?</h3>
 <p>In Google Drive mode, no: your spreadsheet and folder remain in your Drive

@@ -264,6 +264,35 @@ nav a[aria-current="page"] {
   font-size: .87rem;
 }
 
+/* ── Features page ──────────────────────────────────────────── */
+/* "AI key" marks the optional features. A text label, not a colour,
+   so it reads the same to everyone. */
+
+.tag {
+  display: inline-block;
+  padding: .05em .45em;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  font-family: var(--font-data);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  vertical-align: .15em;
+  white-space: nowrap;
+}
+
+h2 .tag { font-size: .6rem; margin-left: .4rem; }
+
+.toc ul {
+  columns: 2 13rem;
+  column-gap: 1.5rem;
+  margin: .4rem 0 0;
+}
+
+.toc li { margin: 0 0 .4rem; break-inside: avoid; }
+
 /* ── Screenshots ────────────────────────────────────────────── */
 /* Ready for app screenshots; see README for what to export. Drop
    images into site/shots/ and add the markup — no CSS changes needed. */

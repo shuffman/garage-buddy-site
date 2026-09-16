@@ -11,6 +11,7 @@
 
 <nav>
   <a href="/">Garage Buddy</a>
+  <a href="/features">Features</a>
   <a href="/release-notes" aria-current="page">Release Notes</a>
   <a href="/support">Support</a>
   <a href="/privacy">Privacy</a>
@@ -18,9 +19,197 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.2.3</strong> &middot; 2026-08-05</p>
+<p class="tagline">Current version <strong>1.9.1</strong> &middot; 2026-09-15</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-9-1">1.9.1 <span class="ver-date">2026-09-15</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Deleting something no longer loses it if you move your data.</strong> A file inside its 8-second Undo window was hidden from the app but not yet deleted — and starting a move to Google or to this device in that moment copied everything *except* that file, then destroyed the original. The record and the file were both gone, with Undo still on screen. Cancelling a pending delete now puts the row back first, and the Undo banner goes away with it.</li>
+  <li><strong>A corrupt local file no longer erases your garage.</strong> In on-device mode, a store file that couldn't be read was quietly replaced with an empty one on the next launch — no error, just an empty garage and nothing to recover from. The file is now left alone and the app tells you, so a backup can still restore it.</li>
+  <li><strong>A move to Google can't destroy your spreadsheet half-way through.</strong> The destination was cleared before anything was uploaded, so a dropped connection during the upload left it permanently empty. Clearing now happens after the files are safely across.</li>
+  <li><strong>Moving data from a store that failed to open is no longer offered.</strong> It would have cleared the destination and deleted the local copy while holding nothing to move.</li>
+  <li><strong>A revoked Google sign-in no longer discards queued changes.</strong> Edits made after access was revoked were treated as ordinary failures and dropped after five retries, despite being the exact case the app promises to hold onto. The sign-in badge now offers to reconnect instead of silently doing nothing, and the message says what to do rather than "You're not signed in to Google."</li>
+  <li>An error arriving while Undo was on screen used to replace it, removing the only way to stop a delete that still went ahead. It now waits its turn.</li>
+  <li>A missing file on this device is no longer reported as missing from Drive.</li>
+  <li>A failed move no longer hides a "reconnect" instruction behind "couldn't refresh".</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li>The tests guarding error messages now check the behaviour a <strong>release</strong> build has. They were passing in Debug for a reason unrelated to the code, so they could not have caught the bug they were written for — verified by deleting the code and watching them stay green.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-9-0">1.9.0 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>The first screen now asks where your data should live.</strong> The Dashboard and Reports tabs used to say "Not Connected — Connect in Settings" with nothing to tap, and Dashboard is the tab the app opens on. Both now offer the same two buttons the Garage tab always had.</li>
+  <li><strong>"Try Again" when a load fails.</strong> A first read that timed out used to show "Not Connected", which told a signed-in user to go and reconnect — while the banner underneath said it would sync itself. Failed loads are now their own state with a retry that re-opens whichever store you chose.</li>
+  <li><strong>Undo for deleting a report or document.</strong> Delete lives in a long-press menu right under "Open in Drive", and one mis-tap used to destroy a scanned title or a buyer dossier for good. The row disappears at once and the delete only commits after an 8-second Undo window.</li>
+  <li><strong>Share on saved reports.</strong> The share sheet used to appear exactly once, right after generating — so emailing Thursday the dossier you built on Sunday meant regenerating it. Share is now in the row's menu, including in local-only mode.</li>
+  <li><strong>Charts say when they're hiding a car.</strong> A car with no activity in the range, or fewer than two fill-ups, simply vanished — indistinguishable from one whose entries hadn't synced. Each chart now names how many are missing and why.</li>
+  <li><strong>Errors keep their own wording.</strong> An independent review found the new error mapper was swallowing the app's own messages: a blocked migration, a denied Google permission, or a mistyped AI address all came out as "Something went went wrong — try again." The mistyped-address case was the worst, since "try again" could never work. Those messages now survive, with tests so they stay that way.</li>
+  <li><strong>A revoked Google session can reconnect again.</strong> If access was revoked part-way through a load, the app concluded the session was fine and offered a retry that could never succeed — with the reconnect button hidden, so Disconnect was the only way out. It now recognises that case.</li>
+  <li><strong>Undo covers album photos too</strong>, not just documents and reports.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The dashboard keeps its controls while loading.</strong> A cold launch replaced the whole screen with one centred spinner; the metric and range pickers now stay live so you can set up the view you want while the read is in flight, and the text says what it's fetching instead of "Syncing", which is also what the background-refresh badge says.</li>
+  <li><strong>A visible way out of a single-car chart.</strong> Getting back used to mean reading a caption and finding that car in a ten-item legend — and when any bar was an estimate, the caption said something else entirely and there was no instruction at all. There's now an "All cars" button beside the chart title.</li>
+  <li><strong>"Spent" says "(all time)".</strong> It sums every entry ever but sat above the 1M/3M/6M range pills and a "last 6 months" caption, so it read as six-month spend and didn't change when you tapped 1M.</li>
+  <li><strong>The garage total says how many cars it covers</strong> — "Estimated total (8 of 9 cars)" — and cars without an estimate say "No estimate" on their own row, instead of the shortfall being sentence three of a grey footer with no way to tell which car.</li>
+  <li><strong>Error messages name the next step.</strong> A Google failure used to put its raw API text in the banner ("Google API error 403: {300 characters of JSON}"). Rate limits, outages, expired access and missing sheets now each say what to do; the raw text is kept for debug builds.</li>
+  <li><strong>Report names truncate in the middle.</strong> Every name starts with the same date, so cutting the end hid the only part that identified the file.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Charts and the "Cars" count disagreed.</strong> The tile counted active cars while every chart drew retired ones too — 9 against 10 bars — so retired mileage quietly inflated fleet comparisons.</li>
+  <li>The floating add button permanently covered the last row of the Garage list; the list now has the bottom clearance the Dashboard already had.</li>
+  <li>The error banner covered the navigation title it appeared over.</li>
+  <li>The Undo button's tappable area was the word "Undo" rather than the button drawn around it, well under the minimum target size — on the one control in the app with a countdown attached.</li>
+  <li>A pending delete could outlive a sign-out or a data move and then try to delete a file in the wrong place.</li>
+  <li>A rotated phone had no way out of a single-car chart, and a car retired while you were looking at it became unclearable.</li>
+  <li>An unrelated edit during an undo window could leave the deleted row hidden until the next successful sync.</li>
+  <li>Retired cars were labelled "No estimate" forever, contradicting the count in the footer above them.</li>
+  <li>Tapping a document twice while it was still downloading cleared the preview.</li>
+  <li>Local-only mode showed a healthy "on this device" in Settings even when the store had failed to open, with no way to retry.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-8-2">1.8.2 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Chart text on the Mac is actually larger now.</strong> 1.8.1 shipped bigger Mac chart sizes that never applied, because the Mac test was <code>#if targetEnvironment(macCatalyst)</code> — a compile-time condition that is false in the iOS binary, and TestFlight hands the iOS binary to an Apple Silicon Mac ("iPad app on Mac"). The check is now <code>ProcessInfo.isMacCatalystApp</code>, which is true for a Mac Catalyst app *and* for the iOS app running on macOS, so it fires whichever build is installed. Sizes went up again as well, and the per-car bar chart's value axis was picking up the default size instead of the Mac one.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-8-1">1.8.1 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Chart text is legible on the Mac.</strong> Axis labels, the numbers at the end of each bar, legends and the captions under each chart were all rendering about a quarter smaller on macOS than on iPhone — Mac Catalyst draws the iPad interface at 0.77 scale, which body text absorbs and an 11-point axis label does not, particularly across a window three times the width of a phone. Chart type now has explicitly larger sizes on Mac, chosen to land at the same apparent size as on iPhone. The iPhone and iPad are untouched, and so are the PDF reports — they share those chart views, and a report should look the same whichever device made it.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-8-0">1.8.0 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The expenses graph ranks your cars, like mileage does.</strong> It was a stacked monthly chart, so working out which car actually costs the most meant comparing the heights of coloured segments by eye. Expenses is now one bar per car totalled over whatever range you've picked — the ranking is the chart — and tapping a car's bar shows that car's spending month by month. The fleet-wide monthly view it replaces is still there per car, one tap in.</li>
+  </ul>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>The app keeps itself up to date while you're looking at it.</strong> It now re-reads your data every 30 seconds whenever it's the app in front, so a Mac window left open beside you picks up what you logged on the phone without being touched. Foregrounding still triggers a read as well, and nothing polls in the background or in on-device mode, where there's nothing to poll.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A car you'd tapped into can always be untapped.</strong> On a chart tab with no data in the selected range — or when the car had been deleted on another device, or simply had too few fill-ups to chart — every bar dimmed with no way to clear the selection. Every tab that dims for a selection now offers a way back. (The Total chart never dims, because it isn't per-car.)</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-7-1">1.7.1 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Report filenames all start with the date now.</strong> The four report types each built their own name and had drifted into three different shapes — the garage report, the car report and the vehicle-history packet put the date at the end, while the fleet report put it at the front. Every one is now <code>YYYY-MM-DD — what it is — which car</code>, so a Reports folder sorts chronologically wherever you look at it. Reports you already generated keep the names they were saved with.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-7-0">1.7.0 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Chart ranges are 1M / 3M / 6M / 1Y / All, and every one is a tap.</strong> The range used to be a single pill showing where you already were, which you tapped to cycle forward — fine with four ranges, tedious with five. All five now sit under the chart tabs with the current one filled in, so any window is one tap away and you can see which is active without touching anything. 1M and 3M are new; 2Y is gone, since All covers it. Swiping up and down over the chart still steps through them.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A second device now notices what the first one did.</strong> Reports generated on the iPhone didn't appear on the Mac until Garage Buddy was quit and relaunched. Two things caused it: the Reports tab had no pull-to-refresh (the Dashboard and Garage have had one all along), and coming back to the app only re-read your data if the last sync had actually failed — an app sitting there connected never asked for anything new. Returning to the app now re-reads if what's on screen is more than a minute old, and the Reports tab can be pulled down like the others.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-6-0">1.6.0 <span class="ver-date">2026-09-14</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>A Reports tab, and reports that are kept.</strong> Reporting used to be four buttons hidden in the toolbars of three different screens, and what they produced existed only in the share sheet — dismiss it and the report was gone. There's now a fourth item in the dock where all four are generated: the fleet report, the whole-garage PDF, and — with a car picker — a single car's report and its vehicle-history packet. The car page and the garage keep their own screens uncluttered; their export buttons have moved here.</li>
+  <li><strong>Every report is filed and listed.</strong> Generating one saves it to a <strong>Reports</strong> folder in your Google Drive, alongside the per-car folders, and it appears under "Saved reports" in the tab — tap to read it again, or long-press to open it in Drive, rename it, or delete it. Reports save the same way attachments do, so generating one works offline and uploads when you're back; on-device mode keeps them on the device instead. The fleet report, which was previously only ever a screenful of text, is now saved as a PDF like the rest — writing it files it automatically, and "Save the Numbers as a Report" keeps the figures on their own whether or not you have an AI key.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Reading a car document is sharper and cheaper.</strong> "Extract Details" on a title, registration or insurance card rendered the PDF at about 72dpi — legible for a heading, marginal for the VIN underneath it — and sent every page of the file, however long. It now renders at roughly 150dpi and stops after the first few pages, which is where a document says what it is. The same rendering the receipt scan has used since 1.5.0.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The mileage graph now compares cars, and a new Total graph shows the fleet.</strong> The Mileage tab was a stacked monthly chart that answered two questions at once and neither cleanly: which cars you actually drive meant estimating the size of coloured segments by eye, and how much you were driving overall was hidden by every bar being split up. Mileage is now one bar per car, summed over whatever range you've swiped to — so the ranking is the chart — and tapping a car's bar still shows that car month by month, now matching the range you picked. A new <strong>Total</strong> tab next to it shows every car's miles combined, one bar a month.</li>
+  <li><strong>The fleet report says what the money was actually spent on.</strong> It treated a car's spending as one number, so a set of tires filed under Maintenance came back as "$900 in maintenance" — which reads as a car that keeps needing work rather than one purchase. The report now breaks the period's spending down by category, with the number of entries behind each total, and a category that is really a single item says so. The written summary is told the same thing and is told not to describe a one-off as ongoing servicing.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-5-1">1.5.1 <span class="ver-date">2026-09-07</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The MPG chart makes room for a full garage.</strong> With eight cars on it, the bars, the car names, the numbers, and the gridlines were all crushed into one 260-point band and the colour legend wrapped onto a second line repeating names the chart already showed. The chart now grows with the garage — each car gets a proper row and the dashboard scrolls — the legend is gone from this view, and the horizontal gridlines that ran between rows went with it. Tap a <strong>bar</strong> now, rather than a legend entry, to drill into that car's fill-ups; the per-fill view keeps its legend for switching cars and going back. The number on the longest bar no longer runs off the edge.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-5-0">1.5.0 <span class="ver-date">2026-09-05</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>What your garage is worth.</strong> The Garage screen now leads with an estimated total, how it has moved since the last estimate, and a per-car figure on each row; a car's own page shows its value, the change, and how it compares to what you paid. Values come from the AI you've already configured — one small text-only question per car, from its year, make, model and mileage — so this appears <strong>only if you've set up an AI key</strong>, and every figure is labelled as an estimate with the date behind it. They're cached and topped up at most once a launch, and only when a car has never been valued or its estimate has passed 30 days, so a ten-car garage costs roughly ten small calls a month; "Update Estimates" re-runs the lot on demand. A generic estimate is worst exactly where cars are most interesting, so <strong>Your value</strong> in a car's Edit screen overrides it everywhere, including the garage total — set it for modified, rare, or project cars and that car is never asked about again.</li>
+  <li><strong>Documents from before you owned the car.</strong> A car's paperwork often arrives with it — the previous owner's service invoices, an inspection report, the bill of sale. Long-press any document on a car's page and mark it "From a Previous Owner": it moves into its own <strong>Previous Owner</strong> section, wears a badge, and is described as inherited history everywhere it appears. It counts as a record, never as your mileage — these are car documents, which carry no odometer reading, so nothing about them can reach your mileage history, averages, projections, or service intervals. They travel with the car: listed and marked in the car report, and — unlike your title, registration, and insurance, which stay private — included in the vehicle-history packet you hand a buyer, because a previous owner's service record is exactly what that packet is for.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Two fill-ups on the same day drew one bar at their combined MPG.</strong> The per-fill economy chart bins its bars by day, and same-day bars were stacked — the default — so two 30 MPG fills rendered as a single 60 MPG bar and dragged the y-axis up with them. Each bar is now drawn from zero, one per fill, as the caption under the chart always claimed. Only the chart was affected: the stored entries, the car's average MPG and the moving-average line were right the whole time.</li>
+  <li><strong>A PDF receipt now gets read, like a photographed one.</strong> Adding a receipt with "Choose PDF" attached the file and stopped there — no scan, no filled-in fields — while the same receipt photographed or scanned with the camera came back with its vendor, date, total, and a summary already in place. The PDF path now runs the same extraction: its pages are rendered and read, and the entry is pre-filled for you to check. Needs an AI key, like every other scan; without one the file is simply attached as before.</li>
+  <li><strong>PDF pages are rendered at a readable size before being read.</strong> They were rasterised at their natural point size — about 72dpi, which is legible for a heading and marginal for the line items under it. Receipts and documents are now rendered at roughly twice that before going to the AI, which also helps the "Extract Details" action on a document you added earlier.</li>
+  </ul>
+  <h3 class="cat cat-removed">Removed</h3>
+  <ul>
+  <li><strong>The fuel-price graph is gone.</strong> The "Fuel $" tab charted what you paid per gallon at each fill. It mostly drew the pump price at the stations you happen to use — a picture of the fuel market, not of your car — so it took up a tab without telling you anything you could act on. Mileage, expenses, and fuel economy are unchanged, and nothing about your fills was deleted: the cost and gallons on every entry are still there and still feed economy and cost-per-mile. A more useful money-per-distance view can take the slot later.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-4-1">1.4.1 <span class="ver-date">2026-08-29</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A seeded run could resync the real account over the sample fleet.</strong> <code>-seedSampleData</code> populates a demo garage and <code>start()</code> returns before any auth or network — but scene activation calls <code>resumeSyncIfNeeded()</code> straight afterwards, which reconnected and pulled the live Google Sheet back over the seeded data, usually a second or two after launch. Anyone capturing screenshots got real cars while believing the demo fleet was on screen. That is how twelve real cars, their photos and real spend reached the 1.3.0 Mac App Store listing. A seeded run now refuses to sync. DEBUG only.</li>
+  </ul>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>Mac App Store screenshots now come from the sample fleet.</strong> Replaces the three shots on the macOS listing, which were captured from a real garage: cars by name, year, model and exact odometer, the owner's own photos of them (driveways, a house, a street), total spend, and a dated activity log. Screenshots on a <code>READY_FOR_SALE</code> version can only be replaced by submitting a new version, so this release exists to carry the clean ones.</li>
+  <li><strong>New <code>tools/capture-mac-screenshots.sh</code>.</strong> Builds, launches the seeded app three times and captures each tab at exactly 2560x1600, so the store assets are reproducible instead of hand-grabbed. Backed by a DEBUG-only <code>-screenshotFrame x,y,w,h</code> launch argument that pins the window to an exact rect — Catalyst renders at 0.77 scale, so the numbers in the script are pre-calibrated to land on 1280x800 points.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-4-0">1.4.0 <span class="ver-date">2026-08-23</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>"Missed a fill-up before this" on gas and charging entries.</strong> When a tank gets filled without being logged — someone else fills it, a jerry can, a receipt that never made it home — the next fill you log looks like it covered two tanks' worth of miles on one tank of fuel, and its MPG comes out roughly double. Turn the switch on when logging that next fill: its MPG is left out of the per-fill chart and the car's average, and the fill after it measures from there, so one unlogged stop no longer bends the trend line. The entry is otherwise a normal entry — its odometer, cost, and gallons still count everywhere else — and it's marked "after a missed fill" in history lists so the gap in the chart has a visible reason.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-3-0">1.3.0 <span class="ver-date">2026-08-07</span></h2>
+  <h3 class="cat cat-removed">Removed</h3>
+  <ul>
+  <li><strong>The Mac no longer offers camera capture.</strong> "Take Photo" and "Scan Document" are gone from the Mac build. Every capture flow here means walking up to a car to photograph an odometer, a pump, or a receipt, and a Mac's camera is fixed to the screen facing the user — the buttons had no plausible use even where they worked. On the Mac they did nothing at all: a sandboxed app is denied the camera silently unless it claims the camera entitlement, so no permission prompt ever appeared. That is the App Review guideline 2.1 rejection for 1.1.0. Macs add photos and documents with "Choose Photo" and "Choose PDF", or scan on the iPhone and let it sync. iPhone and iPad are unchanged.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Choosing a photo from the library left you with no obvious way out.</strong> On the Mac, the photo picker offers a checkmark to confirm but no Cancel, so changing your mind meant guessing that the Escape key would work. The Mac picker now has a Cancel button. iPhone and iPad already had one.</li>
+  <li><strong>Library picking no longer uses a deprecated picker.</strong> It ran through <code>UIImagePickerController</code>, which Apple deprecated for library access in favour of the modern photo picker and which behaves poorly on the Mac, and it was presented as a full-screen cover — which fills the whole Mac window and, unlike on iPhone, can't be swiped away. Every library pick now uses the modern picker in an ordinary sheet.</li>
+  <li><strong>A refused camera now explains itself.</strong> On iPhone and iPad, "Take Photo" asks for permission before opening the camera and, if it's refused, says where to turn it back on instead of leaving a button that does nothing. The odometer scan launched from the widget or a shortcut falls back to the photo-source dialog, so it offers the library rather than dead-ending.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-2-3">1.2.3 <span class="ver-date">2026-08-05</span></h2>

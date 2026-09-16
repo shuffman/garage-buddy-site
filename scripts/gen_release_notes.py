@@ -21,7 +21,8 @@ OUT = "site/release-notes.html"
 # Versions below this were TestFlight-only and are folded away behind a
 # disclosure so the page leads with what shipped. None = show everything.
 COLLAPSE_BELOW = (1, 0, 0)
-NAV = [("/", APP_NAME), ("/release-notes", "Release Notes"),
+NAV = [("/", APP_NAME), ("/features", "Features"),
+       ("/release-notes", "Release Notes"),
        ("/support", "Support"), ("/privacy", "Privacy"), ("/terms", "Terms")]
 
 VER_RE = re.compile(r"^## \[([^\]]+)\](?:\s*-\s*(\S+))?(.*)$")

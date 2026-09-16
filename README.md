@@ -12,6 +12,7 @@ five-minute iOS build (and an app fix doesn't redeploy the website).
 | Path | File | Used for |
 |---|---|---|
 | `/` | `site/index.html` | Landing page |
+| `/features` | `site/features.html` | Full feature documentation, hand-written from the app code |
 | `/release-notes` | `site/release-notes.html` | Version history — **generated**, don't hand-edit |
 | `/privacy` | `site/privacy.html` | **App Store "Privacy Policy URL"** (required) |
 | `/support` | `site/support.html` | **App Store "Support URL"** (required) |
@@ -44,6 +45,17 @@ is HTML-escaped and passes through as literal text rather than breaking.
 [`workout-buddy-site`](https://github.com/shuffman/workout-buddy-site) with a
 different config block, for the same reason `style.css` is: two self-contained
 repos beat a shared package for something this small.
+
+## The features page is hand-written — check it on feature releases
+
+`site/features.html` documents every feature, written by reading the app's
+screens and models (last checked against **1.9.1**). Unlike the release notes
+it isn't generated, so it drifts: when a release adds, removes or renames
+something user-visible, update the matching section. UI labels in bold are
+quoted from the app, so a renamed button is worth a grep here.
+
+Features that need the user's own AI key are marked with `<span class="tag">AI
+key</span>` — a text label, not a colour.
 
 ## The odometer hero
 

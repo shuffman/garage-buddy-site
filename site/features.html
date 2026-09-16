@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Features — Garage Buddy</title>
+<meta name="description" content="Everything Garage Buddy does: odometer and receipt scanning, mileage and cost charts, fuel economy for gas and electric cars, reminders, reports, and storage on your iPhone or in your own Google Drive.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="/">Garage Buddy</a>
+  <a href="/features" aria-current="page">Features</a>
+  <a href="/release-notes">Release Notes</a>
+  <a href="/support">Support</a>
+  <a href="/privacy">Privacy</a>
+  <a href="/terms">Terms</a>
+</nav>
+
+<h1>Features</h1>
+<p class="tagline">Everything Garage Buddy does, screen by screen.</p>
+
+<p class="lede">Garage Buddy runs on iPhone, iPad and Mac. Almost everything
+works with no account and no network. A few features use AI with an API key
+you supply yourself; those are marked <span class="tag">AI key</span>, and the
+app works fine without them.</p>
+
+<div class="card toc">
+  <p><strong>On this page</strong></p>
+  <ul>
+    <li><a href="#getting-started">Getting started</a></li>
+    <li><a href="#logging">Logging an entry</a></li>
+    <li><a href="#scanning">Photo scanning</a></li>
+    <li><a href="#dashboard">The dashboard</a></li>
+    <li><a href="#garage">The garage and each car</a></li>
+    <li><a href="#economy">Fuel economy, gas and electric</a></li>
+    <li><a href="#reminders">Reminders and to-dos</a></li>
+    <li><a href="#documents">Documents and photos</a></li>
+    <li><a href="#value">Garage value</a></li>
+    <li><a href="#reports">Reports</a></li>
+    <li><a href="#storage">Storage, sync and offline use</a></li>
+    <li><a href="#ai">Setting up AI</a></li>
+    <li><a href="#shortcuts">Widgets, Siri and shortcuts</a></li>
+    <li><a href="#units">Units</a></li>
+    <li><a href="#devices">iPad and Mac</a></li>
+  </ul>
+</div>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="getting-started">Getting started</h2>
+
+<p>The first screen asks where your data should live:</p>
+<ul>
+  <li><strong>On this device</strong> — no account, no sign-up, works
+  offline. Included in your normal iPhone backup.</li>
+  <li><strong>Google Drive</strong> — sign in with Google and the app keeps
+  your records in a spreadsheet in your own Drive, which also lets your
+  iPhone, iPad and Mac share one garage.</li>
+</ul>
+<p>You can move between the two later; see <a href="#storage">Storage</a>.</p>
+
+<p>Then add your cars. Only a name is required, but each car can hold:</p>
+<ul>
+  <li>Year, make, model, colour, licence plate and VIN</li>
+  <li><strong>Starting mileage</strong> — the odometer reading when you got
+  the car. This matters for used cars, since miles are counted from here.</li>
+  <li>Date acquired and purchase price</li>
+  <li>A <strong>reference photo</strong> of the dashboard or interior, which
+  helps AI scans work out which car a photo belongs to</li>
+  <li>Your own estimate of what it's worth (see <a href="#value">Garage
+  value</a>)</li>
+</ul>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="logging">Logging an entry</h2>
+
+<p>Every entry records a car, a date and an odometer reading, plus a
+category:</p>
+<ul>
+  <li><strong>Odometer Check</strong> — just the mileage</li>
+  <li><strong>Gas</strong> — with cost and gallons (or litres)</li>
+  <li><strong>Charging</strong> — with cost and kWh</li>
+  <li><strong>Maintenance</strong>, <strong>Repair</strong>,
+  <strong>Insurance</strong>, <strong>Registration</strong> and
+  <strong>Other</strong> — with cost</li>
+</ul>
+<p>Any entry can also carry notes and attachments: a photo, a PDF, or a
+multi-page document scan saved as one PDF.</p>
+
+<h3>Checks as you type</h3>
+<ul>
+  <li>The last reading for the car is shown under the odometer field. Enter a
+  lower number and the app asks you to double-check it.</li>
+  <li>For gas and charging entries there is a <strong>“Missed a fill-up before
+  this”</strong> switch. Turn it on when fuel went in that you didn't log —
+  someone else filled up, or you lost the receipt — and that gap is left out
+  of the economy figures instead of producing a wildly wrong MPG.</li>
+</ul>
+
+<h3>Getting to the entry screen quickly</h3>
+<ul>
+  <li>The floating <strong>+</strong> button on the Dashboard and Garage</li>
+  <li>Siri, Spotlight and the Action Button — see
+  <a href="#shortcuts">Widgets, Siri and shortcuts</a></li>
+  <li>Home Screen quick actions: press and hold the app icon for
+  <em>Scan Odometer</em> or <em>Log Entry</em></li>
+  <li>The Scan Odometer widget</li>
+</ul>
+
+<p>Retired cars drop out of the car picker so the list stays short.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="scanning">Photo scanning</h2>
+
+<h3>Odometer and gas pump</h3>
+<p>On the entry screen, tap <strong>Scan Odometer Photo</strong> (or
+<strong>Scan Gas Pump</strong> on a gas entry) and take or choose a photo. The
+number is filled in for you to confirm before saving.</p>
+<ul>
+  <li><strong>On-device</strong> (the default) uses Apple's built-in text
+  recognition. It's free, works with no signal, and the photo never leaves
+  your phone. It also picks the car whose last reading is closest to, and just
+  below, the number it read — a scan of 52,550 goes to the car last seen at
+  52,500, not the one at 10,000.</li>
+  <li><strong>AI</strong> <span class="tag">AI key</span> handles harder
+  photos: glare, odd angles, and the seven-segment digital displays that trip
+  up ordinary text recognition. It identifies the car from your reference
+  photos, the dashboard style and whether the mileage is plausible. The
+  on-device reader runs alongside as a cross-check and flags any
+  disagreement.</li>
+</ul>
+
+<h3>Receipts</h3>
+<p>Scan a receipt with the multi-page document scanner, or attach a photo or
+PDF you already have. <span class="tag">AI key</span> With AI set up, the app
+reads it and fills in the total, the date and the category, and writes a short
+summary into the notes. A PDF receipt is read the same way as a photographed
+one.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="dashboard">The dashboard</h2>
+
+<p>The Dashboard is the first tab. At the top are fleet totals, including
+<strong>Spent (all time)</strong>. Below them is a chart with four views —
+tap a tab or swipe left and right to switch:</p>
+<ul>
+  <li><strong>Mileage</strong> — one bar per car, the miles driven in the
+  selected range, so the longest bar is the car you use most. Tap a bar to see
+  that car month by month.</li>
+  <li><strong>Total</strong> — every car's miles added together, one bar per
+  month.</li>
+  <li><strong>Expenses</strong> — one bar per car, what it cost you in the
+  range. Tap a bar for that car's spending by month.</li>
+  <li><strong>Economy</strong> — one bar per car. Tap for that car's
+  individual fill-ups.</li>
+</ul>
+<p>The range buttons — <strong>1M, 3M, 6M, 1Y, All</strong> — change the window
+for every chart. After tapping into one car, <strong>All cars</strong> next to
+the chart title takes you back.</p>
+<p>Months with no reading yet are drawn as faded bars, projected from recent
+use. When a car is left off a chart — nothing logged in the range, or too few
+fill-ups — the chart says how many are missing and why, so a missing bar is
+never a mystery.</p>
+<p>Under the chart are upcoming <strong>Reminders</strong>, which you can mark
+done from there, and <strong>Recent Activity</strong>.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="garage">The garage and each car</h2>
+
+<p>The Garage tab lists your cars in two groups, Active and Retired. Each row
+shows the car's photo, current mileage and small badges:</p>
+<ul>
+  <li>A bell when a reminder is <strong>due soon</strong>, and a bell with a
+  badge when one is <strong>overdue</strong></li>
+  <li>A checklist icon with the number of open to-dos</li>
+  <li>A warning icon for something that looks wrong in the log: an odometer
+  reading that went backwards, a drop in fuel economy, an unusually large
+  cost, or no entry for a long time</li>
+  <li>The car's estimated value, if you use <a href="#value">Garage
+  value</a></li>
+</ul>
+
+<p>Tap a car to open its page, which has these sections:</p>
+<ul>
+  <li><strong>Photos</strong> — the car's album, with one picture chosen as
+  the cover</li>
+  <li><strong>Mileage</strong> and a <strong>miles-per-month</strong>
+  chart</li>
+  <li><strong>Fuel Economy</strong> or <strong>Efficiency</strong> for
+  electric cars — see <a href="#economy">below</a></li>
+  <li><strong>Details</strong> — year, make, model, plate, VIN and so on</li>
+  <li><strong>Reminders</strong> and <strong>To-Do</strong></li>
+  <li><strong>Value</strong>, and <strong>Purchase &amp; Sale</strong> with
+  the profit or loss once it's sold</li>
+  <li><strong>Costs</strong> — cost per mile, total spent, and a breakdown by
+  category</li>
+  <li><strong>Documents</strong>, including a separate <strong>Previous
+  Owner</strong> group</li>
+  <li><strong>History</strong> — every entry, filterable by category</li>
+</ul>
+
+<h3>Selling or retiring a car</h3>
+<p><strong>Retire (Sold) Car</strong> asks for the sale price and date and
+shows the profit against what you paid. Leave the price blank if it wasn't
+sold. A retired car keeps its full history and still appears in charts and
+reports; it just leaves the quick-entry picker. <strong>Reactivate
+Car</strong> brings it back.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="economy">Fuel economy, gas and electric</h2>
+
+<ul>
+  <li><strong>Per fill-up economy.</strong> Each bar is one tank, measured
+  from the previous fill-up. A line shows the moving average over the last
+  five, so a trend stands out from one odd tank.</li>
+  <li><strong>Electric cars</strong> log <em>Charging</em> entries with kWh.
+  Their page shows miles per kWh per charge, with the same five-charge
+  average.</li>
+  <li><strong>One fleet chart for both.</strong> On the Dashboard, electric
+  cars are converted to MPGe using the EPA's figure of 33.7 kWh per gallon,
+  so a hybrid, a V8 and an EV sit on one scale.</li>
+</ul>
+<p>A car needs at least two gas entries with gallons, or two charging entries
+with kWh, before it has an economy figure.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="reminders">Reminders and to-dos</h2>
+
+<h3>Reminders</h3>
+<ul>
+  <li><strong>By date</strong> — registration, insurance, inspection. You get
+  a notification at 9am on the day it's due.</li>
+  <li><strong>By mileage</strong> — oil changes, tyre rotations. Checked
+  against the car's latest reading.</li>
+  <li><strong>One-off or repeating</strong> — every N months, or every N
+  miles.</li>
+</ul>
+<p>A reminder is marked <strong>Soon</strong> within 30 days or 500 miles, and
+<strong>Overdue</strong> after that. Marking a repeating reminder done moves it
+to the next due date or mileage that is still ahead of you, so catching up on
+an overdue one doesn't leave it overdue again.</p>
+
+<h3>Suggested service intervals <span class="tag">AI key</span></h3>
+<p>On a car's page, <strong>Suggest Service Intervals</strong> asks the AI for
+that car's maintenance schedule. You get a list to review: untick anything you
+don't want, and suggestions that match reminders you already have start
+unticked. Nothing is added until you tap <strong>Add</strong>.</p>
+
+<h3>To-dos</h3>
+<p>For things you noticed and don't want to forget — a squeak to look at, a
+bulb to replace. No due date and no notification, just a list per car to tick
+off. The open count shows on the car's row in the Garage.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="documents">Documents and photos</h2>
+
+<h3>Car documents</h3>
+<p>Titles, registrations, insurance cards and anything else that belongs to the
+car rather than to one entry. Add one by scanning (multi-page), taking a photo,
+or choosing a photo or PDF. From a document's menu you can rename, share, open
+it in Drive, or delete it.</p>
+<ul>
+  <li><strong>Automatic naming</strong> <span class="tag">AI key</span> —
+  the app reads a new document and suggests a name for it.</li>
+  <li><strong>Extract Details</strong> <span class="tag">AI key</span> —
+  reads the VIN, licence plate, insurance policy and expiry date off the
+  document and offers to update the car and create a renewal reminder. You see
+  exactly what will change, including any value it would replace, before
+  anything is applied.</li>
+  <li><strong>Previous owner records.</strong> Mark a document as coming from
+  before you owned the car — old service invoices, an inspection report, the
+  bill of sale. It's kept under <em>Previous Owner</em> as the car's history,
+  is never counted as your mileage, and is included in the vehicle-history
+  packet.</li>
+</ul>
+
+<h3>Photo album</h3>
+<p>Each car has its own album. Add pictures from the camera, your library, or
+the clipboard, and choose which one is the cover shown in the
+Garage list and at the top of the car's page.</p>
+
+<h3>Undo</h3>
+<p>Deleting a document, report or album photo removes it straight away and
+shows an <strong>Undo</strong> button for 8 seconds. The file is only deleted
+once that time runs out.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="value">Garage value <span class="tag">AI key</span></h2>
+
+<p>Garage Buddy can estimate what each car is worth from its year, make, model,
+colour and mileage. Tap <strong>Estimate Values</strong> in the Garage for the
+whole fleet, or <strong>Estimate Value</strong> on one car.</p>
+<ul>
+  <li>The Garage shows an <strong>estimated total</strong>, how many cars it
+  covers (“8 of 9 cars”), and the change since the last estimate.</li>
+  <li>Enter your own figure on any car and it replaces the estimate
+  everywhere, including the total. Worth doing for modified, rare or project
+  cars, where a generic estimate is least reliable.</li>
+  <li>These are estimates, not appraisals.</li>
+</ul>
+<p>Without an AI key this section doesn't appear at all.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="reports">Reports</h2>
+
+<p>The Reports tab is where every report is made. There are four:</p>
+
+<h3>Fleet report</h3>
+<p>For <strong>this month</strong> or <strong>this year</strong>: the numbers,
+<em>where it went</em> (spending by category, with the number of entries behind
+each total), and how much each car was driven and cost. A category that was
+really one purchase — a set of tyres — is labelled as such rather than looking
+like ongoing servicing.</p>
+<p><span class="tag">AI key</span> With AI set up, it also writes a
+plain-English summary. Without one, <strong>Save the Numbers as a
+Report</strong> keeps the figures on their own.</p>
+
+<h3>Garage report</h3>
+<p>A multi-page PDF of the whole fleet: an overview page with fleet totals and
+the miles-per-month chart, then a section per car with its stats and full
+log.</p>
+
+<h3>Car report</h3>
+<p>One car's complete history as a PDF, with its charts, entries and a list of
+its documents — the one to hand a mechanic.</p>
+
+<h3>Vehicle-history packet</h3>
+<p>The one to hand a buyer. It combines an AI-written history of the car
+<span class="tag">AI key</span>, the charts that back it up, the service
+record, the full log, photos, and the scanned receipts behind the work.</p>
+<p>Because it's meant to leave your hands, it deliberately
+<strong>leaves out</strong>:</p>
+<ul>
+  <li>What you paid for the car and what you sold it for</li>
+  <li>Title, registration and insurance documents, which carry policy numbers
+  and home addresses</li>
+  <li>Receipts filed under Insurance or Registration, for the same reason</li>
+</ul>
+<p>All of that is still in the app and in the ordinary car report.</p>
+
+<h3>Saved reports</h3>
+<p>Every report you generate is kept. It's filed to a <strong>Reports</strong>
+folder in your Google Drive (or on the device in on-device mode) and listed
+under <em>Saved reports</em>. Tap one to read it again; press and hold to share
+it, rename it, open it in Drive or delete it. Report names start with the date
+— <code>YYYY-MM-DD — what it is — which car</code> — so the folder sorts in
+order. Generating a report works offline and uploads when you're back
+online.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="storage">Storage, sync and offline use</h2>
+
+<h3>On this device</h3>
+<p>Everything stays in the app's own storage and goes into your normal device
+backup. No account and no network are needed. It doesn't sync between devices;
+iCloud sync for this mode is not available yet.</p>
+
+<h3>Google Drive</h3>
+<ul>
+  <li>Your records live in a spreadsheet called <strong>Garage Buddy</strong>
+  with tabs for Cars, Transactions, Attachments, Reminders and Todos. You can
+  open it and edit it by hand: columns are matched by their header, so
+  reordering them or adding your own won't break anything.</li>
+  <li>Photos, documents and receipts go into a <strong>Garage Buddy</strong>
+  folder with a subfolder per car, and a Photo Album inside each.</li>
+  <li>The app asks only for Google's <code>drive.file</code> permission,
+  which lets it see the files it created and nothing else in your Drive.</li>
+  <li>While the app is open it re-reads your data every 30 seconds, so a Mac
+  window left open picks up what you just logged on your phone. Pull down on
+  any list to refresh straight away.</li>
+</ul>
+
+<h3>Offline</h3>
+<p>In Google Drive mode your data is cached, so the app opens instantly and you
+can read everything with no signal. Entries you log offline are queued and sent
+when you're back online; a badge shows how many changes are waiting. New
+attachments need a connection to upload. If Google access expires, queued
+changes are kept and the badge offers to reconnect.</p>
+
+<h3>Moving your data</h3>
+<p>In <em>Settings → Data</em>:</p>
+<ul>
+  <li><strong>Move Data to Google Sheets</strong> uploads your cars, entries,
+  photos and documents to your Drive. Nothing is deleted until the move has
+  finished.</li>
+  <li><strong>Move Data to This Device</strong> copies everything onto the
+  device and signs out of Google. The spreadsheet and files stay in your Drive
+  as a snapshot.</li>
+</ul>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="ai">Setting up AI</h2>
+
+<p>AI is optional and off until you add a key. Garage Buddy runs no servers
+and has no AI account of its own: you use your own key, and pay your provider
+directly. Set it up in <em>Settings → AI</em>.</p>
+<ul>
+  <li><strong>Providers:</strong> Anthropic (Claude), Google (Gemini), or any
+  OpenAI-compatible service.</li>
+  <li><strong>Models:</strong> a short list for each provider with a note on
+  what each is good at and a rough cost per scan — typically a fraction of a
+  cent to a few cents. Or enter any model ID yourself.</li>
+  <li><strong>Keys</strong> are stored in the iOS Keychain and sent only to the
+  provider they belong to. <strong>Verify Key</strong> checks one works before
+  you rely on it.</li>
+  <li><strong>Test Models</strong> runs the full odometer scan on one of your
+  own photos. <em>Test All</em> tries every model from every provider you have
+  a key for, plus on-device, and compares the reading, confidence and time
+  taken. Nothing is added to your log, but each AI run is billed to that
+  key.</li>
+</ul>
+<p>What AI is used for: odometer, gas pump and receipt scans; naming documents
+and extracting details from them; service interval suggestions; value
+estimates; and the written parts of the fleet report and vehicle-history
+packet. The <a href="/privacy">privacy policy</a> lists exactly what each one
+sends.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="shortcuts">Widgets, Siri and shortcuts</h2>
+
+<h3>Home Screen widgets</h3>
+<ul>
+  <li><strong>Scan Odometer</strong> (small) — one tap to the camera</li>
+  <li><strong>Upcoming Reminders</strong> (small or medium) — what's due
+  next</li>
+  <li><strong>Fleet Snapshot</strong> (small or medium) — active cars, miles
+  and spend this month, and a mileage trend line</li>
+</ul>
+
+<h3>Siri, Spotlight and the Action Button</h3>
+<p>Two shortcuts are available without any setup:</p>
+<ul>
+  <li><strong>Scan Odometer</strong> — “Scan odometer in Garage Buddy” or
+  “Log mileage in Garage Buddy”</li>
+  <li><strong>Log Entry</strong> — “Log an entry in Garage Buddy”</li>
+</ul>
+<p>Both show up in the Shortcuts app and Spotlight, and either can be assigned
+to the Action Button.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="units">Units</h2>
+
+<p>In <em>Settings → Units</em>:</p>
+<ul>
+  <li>Distance: miles or kilometres</li>
+  <li>Volume: gallons or litres</li>
+  <li>Economy: MPG, km/L, L/100 km or gal/100 mi</li>
+</ul>
+<p>Units only change what's displayed. The spreadsheet always stores miles and
+gallons, so switching never alters your data. Currency follows your device's
+region, and dates are shown as YYYY-MM-DD.</p>
+
+<!-- ───────────────────────────────────────────────────────── -->
+<h2 id="devices">iPad and Mac</h2>
+
+<p>The same app runs on iPad and on Apple Silicon Macs. On the Mac, chart text
+is sized up for a desktop window, and reports open a normal save dialog.
+Where there's no camera, choose or paste photos instead.</p>
+<p>To see the same garage on several devices, use Google Drive mode and sign in
+with the same Google account on each one.</p>
+
+<footer>
+  <p>Garage Buddy · <a href="/support">Support</a> ·
+  <a href="/privacy">Privacy Policy</a> &middot; <a href="/terms">Terms</a></p>
+</footer>
+
+</body>
+</html>
