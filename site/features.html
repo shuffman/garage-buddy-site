@@ -124,8 +124,17 @@ multi-page document scan saved as one PDF.</p>
 
 <h3>Odometer and gas pump</h3>
 <p>On the entry screen, tap <strong>Scan Odometer Photo</strong> (or
-<strong>Scan Gas Pump</strong> on a gas entry) and take or choose a photo. The
-number is filled in for you to confirm before saving.</p>
+<strong>Scan Gas Pump</strong> on a gas entry) and take or choose a photo.
+Usually the number is filled in for you to check before saving — but not
+always, and the exception matters more than the rule. See
+<a href="#when-it-wont-fill-it-in">below</a>.</p>
+<p>You don't have to frame the shot carefully. Before sending an odometer
+photo, the app finds the numbers on your dashboard and zooms to them, at full
+camera resolution. That sounds cosmetic and isn't: a dashboard photo puts the
+instrument cluster in perhaps a quarter of the frame, and once the picture was
+shrunk for upload the digits were only about twenty pixels tall — too small to
+read reliably. On test photos framed the way people actually hold a phone,
+zooming first took the reading from wrong every time to right every time.</p>
 <ul>
   <li><strong>On-device</strong> (the default) uses Apple's built-in text
   recognition. It's free, works with no signal, and the photo never leaves
@@ -136,9 +145,38 @@ number is filled in for you to confirm before saving.</p>
   photos: glare, odd angles, and the seven-segment digital displays that trip
   up ordinary text recognition. It identifies the car from your reference
   photos, the dashboard style and whether the mileage is plausible. The
-  on-device reader runs alongside as a cross-check and flags any
-  disagreement.</li>
+  on-device reader runs alongside as a cross-check.</li>
 </ul>
+
+<h3 id="when-it-wont-fill-it-in">When it won't fill the number in</h3>
+<p>A wrong odometer reading is worth being careful about: every mileage, MPG
+and cost-per-mile figure in the app is worked out from these readings, and once
+a wrong one is saved there is no way to tell later which entry it was. So the
+app distinguishes two different kinds of doubt.</p>
+<ul>
+  <li><strong>Something contradicts the reading</strong> — the AI's own
+  digit-by-digit transcription doesn't match the number it reported, or the
+  reading has fewer digits than your last one (an odometer can't lose a digit).
+  The app tells you what it read and <em>leaves the field for you</em>, because
+  a number it has reason to doubt is worse than no number.</li>
+  <li><strong>The two readers simply disagree.</strong> The field is filled in
+  and the app shows you what on-device recognition made of it. That's a
+  prompt to glance at your dashboard, not a reason to withhold the reading —
+  on-device text recognition is the weaker of the two, so letting it veto the
+  AI meant retyping perfectly good numbers.</li>
+</ul>
+
+<h3>Helping it get better <span class="tag">optional</span></h3>
+<p><strong>Settings → Improve Odometer Scanning</strong> is off by default.
+Turn it on and each odometer photo you scan is kept — in a
+<strong>Scan Review</strong> folder in your own Google Drive, or on the device
+if that's where your data lives — along with what the app read and what you
+actually saved.</p>
+<p>It keeps the ones it got <em>right</em> as well as the ones you corrected.
+That sounds like clutter and isn't: without the correct ones, a change to the
+scanning can look like an improvement while quietly breaking what already
+worked. The photos go nowhere else, and you can delete the folder — or use
+<strong>Delete kept photos</strong> on the device — whenever you like.</p>
 
 <h3>Receipts</h3>
 <p>Scan a receipt with the multi-page document scanner, or attach a photo or
@@ -237,6 +275,20 @@ Car</strong> brings it back.</p>
   <li><strong>Per fill-up economy.</strong> Each bar is one tank, measured
   from the previous fill-up. A line shows the moving average over the last
   five, so a trend stands out from one odd tank.</li>
+  <li><strong>Spaced by fill-up, not by date.</strong> Fill-ups aren't evenly
+  spaced in time — a fortnight of commuting, then six weeks parked — and on a
+  date axis those gaps dominated the chart while consecutive tanks were
+  squeezed together. Economy is a property of a tank rather than of a week, so
+  every fill gets an equal slot, oldest first, and the labels along the bottom
+  still tell you when each one happened. (Two fill-ups on the same day are
+  both visible now, too. On the old axis the second one was drawn underneath
+  the first.)</li>
+  <li><strong>An impossible figure is left out.</strong> A mistyped odometer
+  reading or a partial fill logged as a full one can produce a tank that reads
+  as 400 MPG. Those are ignored — by the chart <em>and</em> by the average on
+  the Dashboard, from the same threshold. They used to be ignored by only the
+  chart, which meant a bad entry vanished from the picture while still dragging
+  the headline number.</li>
   <li><strong>Electric cars</strong> log <em>Charging</em> entries with kWh.
   Their page shows miles per kWh per charge, with the same five-charge
   average.</li>
@@ -246,6 +298,10 @@ Car</strong> brings it back.</p>
 </ul>
 <p>A car needs at least two gas entries with gallons, or two charging entries
 with kWh, before it has an economy figure.</p>
+<p>The average is total miles divided by total gallons, not the average of each
+tank's figure. A one-gallon top-up therefore counts for one gallon rather than
+as an equal vote — its odometer gap is short, so a rounding error in it would
+otherwise swing the whole number.</p>
 
 <!-- ───────────────────────────────────────────────────────── -->
 <h2 id="reminders">Reminders and to-dos</h2>
@@ -391,7 +447,9 @@ iCloud sync for this mode is not available yet.</p>
   open it and edit it by hand: columns are matched by their header, so
   reordering them or adding your own won't break anything.</li>
   <li>Photos, documents and receipts go into a <strong>Garage Buddy</strong>
-  folder with a subfolder per car, and a Photo Album inside each.</li>
+  folder with a subfolder per car, and a Photo Album inside each. Generated
+  reports go in <strong>Reports</strong>, and — only if you turn it on —
+  scanned odometer photos go in <strong>Scan Review</strong>.</li>
   <li>The app asks only for Google's <code>drive.file</code> permission,
   which lets it see the files it created and nothing else in your Drive.</li>
   <li>While the app is open it re-reads your data every 30 seconds, so a Mac
