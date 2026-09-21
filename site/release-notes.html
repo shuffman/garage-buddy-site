@@ -19,9 +19,178 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.10.1</strong> &middot; 2026-09-16</p>
+<p class="tagline">Current version <strong>1.19.1</strong> &middot; 2026-09-20</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-19-1">1.19.1 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A mistyped odometer reading no longer skews a car's average MPG.</strong> The fuel-economy chart already ignored impossible figures so they wouldn't wreck it — but the average shown on the dashboard didn't, so a bad entry disappeared from the chart while still dragging the headline number. Worse, the chart looking normal made the average look trustworthy. On a four-fill history with one 10× typo the average read <strong>153 MPG instead of 30</strong>; the EV equivalent read <strong>1,398 MPGe instead of about 102</strong>. Both now ignore the same entries, from the same threshold. This does not yet *tell* you about a suspect entry — it's still silently excluded from both. That part is #72 and is waiting on a decision about a "filled the tank?" checkbox, which would prevent most of these at entry instead of flagging them afterwards.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-19-0">1.19.0 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-changed">Changed</h3>
+  <ul>
+  <li><strong>The per-car fuel-economy chart is now spaced by fill-up, not by date.</strong> Fill-ups are unevenly spaced in time — a fortnight of commuting, then six weeks parked — and on a date axis those gaps dominated the picture while consecutive fills were squeezed together and hard to compare. Economy is a property of a tank rather than of a week, so each fill now gets an equal slot, oldest first. The axis labels still show *when* each fill happened, so nothing about the timeline is lost.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Two fill-ups on the same day are both visible now.</strong> On the old date axis they landed on the same position and the second was drawn underneath the first — so a second fill on one day simply wasn't there. This was the motivating bug behind the axis change rather than a side effect of it.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-18-0">1.18.0 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A network blip can no longer produce a second, empty spreadsheet.</strong> On launch the app checks the workbook it remembers; that check treated *any* failure — a dropped connection, a Google outage, an expired token — the same as "the spreadsheet was deleted", and then went looking for one. Because Drive's file search is also eventually consistent and can briefly not list a file that exists, the two together could end in the app creating a fresh empty workbook while your real one sat in Drive. That presents as every car and every entry having vanished. Now only a genuine "not found" justifies making one, anything else is reported so you can retry, and an empty search is confirmed a second time before creating.</li>
+  <li><strong>Entries with no odometer reading no longer show "0 mi".</strong> An insurance payment logged without a reading was displaying as made at zero miles; it now says "no reading", shown lighter rather than in a different colour.</li>
+  <li><strong>A vehicle history document no longer tells the AI a car was bought at zero miles</strong> when the purchase odometer was never recorded — it says "not recorded" and asks it not to estimate annual mileage from the ownership period. Both facts were going into a document meant for a buyer.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>The Mac chart-typography test was branching on a compile-time platform check inside an iOS-only test target, so its Mac half never compiled and its expectations had drifted to sizes the code stopped using months ago. The sizes are now a pure function of "is this a Mac", so both platforms are checked from either one.</li>
+  <li><code>digitRegion</code> now has tests that run real text recognition over rendered digits and verify the crop lands on the half containing them — closing the gap where ADR-040 claimed a coordinate flip was covered when the test actually pinned its consumer.</li>
+  <li>ADR-009, ADR-016 and ADR-018 corrected where they described intentions as facts, each dated with the version that made it true. ADR-048 records the rule. Tests 340 → 350.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-17-1">1.17.1 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>"Delete kept photos" no longer claims success when it fails.</strong> If removal failed, Settings said "Kept so far: 0" with the photos still on the device — and because the button only appears when the count is above zero, it also took away the only way to try again. The count now only resets when the files actually go.</li>
+  <li><strong>A large photo can no longer slip past the size limit</strong> the app applies before sending a scan. An optimisation added in 1.17.0 measured the image in points rather than pixels, so an image with a 2× scale factor could be sent at double the intended resolution. Not reachable from the camera, but the limit is there for a reason.</li>
+  <li><strong>Kept scan photos decide where to go by asking the store</strong>, not by checking which storage mode the app is in. Those can disagree, and when they did the photos would have gone back to being unnamed files — the bug 1.17.0 fixed.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>ADR-047 (a pixel budget is not a point budget); ADR-045 extended with <code>CarStore.preservesFileNames</code> and the failed-delete path. Tests 337 → 340.</li>
+  <li><code>second-opinion</code> reworked to make agreement expensive rather than its prose harsher: <code>claim_check</code> now demands a falsifier before a ruling and can answer "could not check", and the reviewer must name its weakest claim and where it would look for a defect it missed. Re-running the identical review took it from 0 findings to 2.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-17-0">1.17.0 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A scan no longer refuses to fill in a reading just because the two readers disagree.</strong> The app cross-checks the AI against on-device recognition, and it was leaving the field empty whenever they differed — but the on-device reader is the weaker of the two, so it was vetoing perfectly good readings and making you retype them. Now it fills the field and tells you the other reading, and only withholds when something actually contradicts the number: the AI's own digit list not matching, or a reading with fewer digits than your last one.</li>
+  <li><strong>The digit-count check now uses the car you picked</strong>, not the car the scan guessed. Previously a correct low reading on a new car could be refused because a *different* car reads 128,456 — and the message quoted a number that car never had.</li>
+  <li><strong>Saving an entry no longer waits for the diagnostic upload.</strong> With "Keep my odometer scans" on, the entry sheet stayed open while two photos uploaded.</li>
+  <li><strong>Kept scans work properly on-device.</strong> In local mode the photos were being written as unnamed files with no folder and no way to find or delete them, while Settings said otherwise. They now go to a real folder with real names, and Settings has a "Delete kept photos" button that actually works.</li>
+  <li><strong>Kept scans record kilometres correctly.</strong> One field was being stored in miles while the rest were in your chosen unit, which made every kept sample wrong for anyone not using miles.</li>
+  <li><strong>A gas-pump scan no longer inherits the previous odometer photo</strong>, which filed the pump's number against the wrong picture.</li>
+  <li><strong>A scan photo is no longer re-processed four times</strong>, which on a 12-megapixel photo was enough memory pressure to matter on an older phone.</li>
+  <li>The "Keep photos I correct" switch is now "Keep my odometer scans", because it keeps all of them — the correct ones are what show whether a change helped.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>ADR-044 (evidence of error withholds; absence of agreement warns), ADR-045 (a store method is not reusable until both implementations are read), ADR-046 (units are picked once and recorded with the value). ADR-040's test-coverage claim corrected. Tests 333 → 337. Two findings filed as #77 rather than guessed at.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-16-0">1.16.0 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Settings → Improve Odometer Scanning.</strong> Off by default. Turn it on and each odometer photo you scan is kept in a “Scan Review” folder in your own Google Drive (or on the device in local mode), together with what the app read and what you actually saved. That gives the scanning something real to be measured against instead of sample pictures — which is what the last round of fixes was missing. Photos go nowhere else, and you can delete the folder whenever you like; nothing in the app reads it back. It keeps the ones it got *right* as well as the ones you corrected. That sounds like clutter and isn't: without them, a change can look like an improvement while quietly breaking readings that already worked.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A corrected car guess again learns from the whole dashboard photo.</strong> In 1.15.0 the new zoom-to-the-digits step meant that when you corrected which car a scan belonged to, the app stored a tight crop of the instrument cluster as that car's reference picture instead of the dashboard shot — leaving later scans trying to recognise a car from its gauges.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>ADR-043. <code>Testing/odometer-bench/import-scan-review.py</code> converts a downloaded Scan Review folder into a bench sample set. Tests 326 → 333.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-15-0">1.15.0 <span class="ver-date">2026-09-20</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>The photo is now zoomed to the numbers before it's sent.</strong> A pump display fills the frame, which is why pump scanning always worked. Your instrument cluster fills maybe a quarter of a dashboard photo, and after the app shrank the picture for upload the odometer digits were only about 20 pixels tall — too small to read reliably. The app now finds the cluster on-device, crops to it at full resolution, and sends that at higher detail. On test photos framed like real ones this went from <strong>0 out of 6 correct to 6 out of 6</strong>.</li>
+  <li><strong>A reading the app isn't sure about is no longer filled in for you.</strong> It already ran a second, independent reader to cross-check — and when the two disagreed it said "double-check" and filled in the first one's answer anyway. Now it tells you both numbers and leaves the field for you. It also refuses a reading that has fewer digits than your last one, since an odometer can't lose a digit, and one where the AI's own digit-by-digit transcription doesn't match the number it reported.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>New <code>Testing/odometer-bench/</code> — scores scanning against photos with known readings, and holds the measurements behind the above. Not in the app target.</li>
+  <li>Removed a line from the AI prompt warning that photos "may be upside down". Measured over 40 calls on upright and rotated images, it changed nothing in either direction; the app already corrects orientation before sending.</li>
+  <li>Three architecture decisions recorded: ADR-040 (crop to the digits before encoding), ADR-041 (a prompt may not describe a condition the pipeline has removed), ADR-042 (prefill a scan only when nothing contradicts it).</li>
+  <li>Tests 315 → 326.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-14-0">1.14.0 <span class="ver-date">2026-09-17</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A second charge at the same charger could vanish.</strong> Two charging entries for the same car, day, odometer and price but different kWh were treated as one duplicate row, and the second disappeared on every read — then a move to a new store made it permanent. Energy is part of what distinguishes two entries now, as is the "fuel added without being logged" flag.</li>
+  <li><strong>Dates edited in the spreadsheet could shift to the previous day.</strong> Once a date cell is formatted as a date, Sheets stores it as a plain day number — and those were read as UTC, which west of UTC is the day before. A entry dated the 1st came back as the last day of the previous month, moving it between months in the charts and reports. It now lands on the day it names.</li>
+  <li><strong>Changes queued for one Google account could sync into another.</strong> Queued changes deliberately survive a sign-out, so they aren't lost — but they weren't tagged with whose they were. Signing in with a different Google account replayed the first account's changes into the second account's spreadsheet. They're now held for the account that made them: sign back in and they sync, or Disconnect to discard, and the app tells you which account is waiting.</li>
+  <li><strong>One unreadable queued change no longer discards all of them.</strong> Unsynced changes were read all-or-nothing, so a single damaged one silently dropped the entire queue — the only copy of every change waiting to sync. Each is read on its own now, and if any can't be read the app says how many were lost instead of leaving you to discover it.</li>
+  <li><strong>Ticking off a reminder or a to-do no longer reverts an edit made elsewhere.</strong> A one-tap "done" sent the whole row from this device's copy, which can be up to 30 seconds old — so it could undo a title or note changed in the web version. It now writes only what being done actually changes.</li>
+  <li><strong>A photo or document uploaded while the app refreshed kept its file.</strong> A narrow timing window could blank the link between an entry and the file it had just uploaded, which then left the file stranded in your Drive when the entry was deleted.</li>
+  <li><strong>A deleted document's row goes before its file.</strong> The two happen as separate requests, and if the second was interrupted the old order left an entry pointing at a file that no longer existed — unopenable, forever. Reversed, an interruption leaves an unused file in Drive instead, which nothing has to look at.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>Five architecture decisions recorded: ADR-035 (a queued write belongs to one account and one record), ADR-036 (read stored collections element by element), ADR-037 (delete the row before the file), ADR-038 (a dedup key names every meaningful field), ADR-039 (a spreadsheet date cell is a calendar day).</li>
+  <li>Tests 287 → 307. The Sheets test harness can now answer requests by URL, so a test about the *order* of requests can't pass or fail for the wrong reason.</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-13-0">1.13.0 <span class="ver-date">2026-09-16</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A decimal odometer reading was ten times too high.</strong> Typing <code>12345.6</code> — a trip meter, a km reading, or what a photo scan returns — stored <code>123456</code>. The reading is what every mileage, MPG and cost-per-mile figure in the app is worked out from, so one entry threw off every chart, and the wrong number looked like real data rather than a mistake. Reminder due-mileage and repeat intervals had the same bug. All three now read the number you typed, including in locales that write <code>1250,5</code>.</li>
+  <li><strong>An edit made while a change was still uploading could be thrown away.</strong> Renaming an entry that hadn't finished syncing showed as saved, then vanished when the earlier upload completed. The newer version now stays queued and goes out.</li>
+  <li><strong>Fixing that could have duplicated an upload.</strong> A photo or document whose entry stayed queued would have been uploaded a second time, leaving an orphan file in your Drive. The app now remembers the file it already uploaded and reuses it.</li>
+  <li><strong>A future update could have discarded your unsynced changes.</strong> Reminders and to-dos were the two records whose stored form couldn't tolerate a new field being added. Because unsynced changes and the offline cache are both read leniently, one unreadable field would have silently dropped *the whole queue of changes waiting to sync* — the only copy of them — rather than one field. Both now read tolerantly, like every other record already did.</li>
+  <li><strong><code>nan</code> or <code>inf</code> no longer breaks a save.</strong> Both parse as real numbers in Swift, and neither can be written to JSON — so one in a cost, gallons or kWh field made the offline cache fail to save, with nothing shown in Google mode. Rejected now both when typed and when read from the spreadsheet, which is the likelier source: the sheet is a document you and the web version both edit.</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>Running the test suite no longer writes to (or deletes from) the same on-device storage a development build uses. Tests get an isolated temporary directory.</li>
+  <li>The column-ownership rule from 1.12.0 — a write only sends the columns it owns, so it can't clobber a value the web app set — is now pinned by tests across every combination, driven through the real Sheets code rather than a stand-in.</li>
+  <li>Two new architecture decisions recorded: ADR-033 (the unsynced queue is the only copy of a change) and ADR-034 (one parser for every user-typed number).</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-12-0">1.12.0 <span class="ver-date">2026-09-16</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>A save could overwrite or delete the wrong record.</strong> Every write found its row by id and then wrote to that row *number*. If the web app, your Mac, or you editing the sheet by hand removed a row above it in the meantime, everything shifted up and the write landed on a different entry — an edit overwrote its neighbour, a delete removed the wrong one, and the duplicate that was left behind was hidden on the next read. Writes now re-check the row is still the right one immediately before touching it, and abandon the write rather than guess.</li>
+  <li><strong>A failed request could delete a second row.</strong> Deletes are sent as a POST, and any failed request was automatically retried — so if the server applied the delete and *then* failed, the retry deleted the next row down. No second device needed; one bad connection was enough. Requests that create or remove something are no longer retried.</li>
+  <li><strong>Moving your data to Google could wipe rows added elsewhere.</strong> The move cleared the existing spreadsheet first, including anything the web version had added that this device had never seen — under a dialog promising nothing would be deleted. It now checks first and refuses, telling you what it found.</li>
+  <li><strong>A Google outage could throw away your offline edits.</strong> Edits made offline were dropped after five failed attempts, and a server error counted as an attempt — so a long outage deleted the very changes the queue exists to protect. Server errors and rate limits now keep their place in the queue.</li>
+  <li><strong>An edit could bring back something you deleted.</strong> If you deleted a car or entry on the web and your phone had an unsent edit to it, the edit re-created it. The app now knows the difference between "this is new" and "this was deleted elsewhere".</li>
+  </ul>
+</section>
+
+<section class="release">
+  <h2 id="v1-11-0">1.11.0 <span class="ver-date">2026-09-16</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>Reminders to record an odometer reading (#33).</strong> Mileage is worked out between readings, so a gap between them leaves those months blank — and they can't be filled in afterwards. The app now notices when a car's last reading is older than an interval you choose (Settings → Odometer Readings; every 3 months by default), badges the car, lists the overdue ones, and sends a notification that opens straight into that car's entry sheet. Counted from each car's last reading, not a fixed date.
+    <ul>
+      <li>This is deliberately about *readings*, not activity: the existing "no recent entry" badge was satisfied by a cost-only entry, so a car with monthly insurance and no reading for a year looked fine.</li>
+    </ul>
+  </li>
+  <li><strong>A real first-run screen (#11).</strong> It used to open on "Where Should Your Data Live?" and two buttons — asking you to decide before saying what the app does or why a spreadsheet is involved. Now it says what it's for, what each storage option means for you, and that the AI features are optional.</li>
+  </ul>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Saving a report on the Mac works again (#32).</strong> The Mac was getting the iPhone share sheet, which has no "Save to Files" — a menu with no way to save the report at all. Same root cause put the camera button and document scanner back on the Mac, where they can't work.</li>
+  <li><strong>An edit no longer vanishes for 30 seconds (#41).</strong> If a refresh started while an earlier change was still uploading, the change could disappear from the screen until the next refresh.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-10-1">1.10.1 <span class="ver-date">2026-09-16</span></h2>
