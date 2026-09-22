@@ -27,7 +27,7 @@
   <h2 id="v1-20-0">1.20.0 <span class="ver-date">2026-09-22</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>Odometer scanning is dramatically faster.</strong> Every scan was uploading a photo of *every* car in your garage so the AI could match the dashboard by sight. With twelve cars that is <strong>10.26 MB</strong> per scan, and a phone's upload speed is a fraction of its download speed however strong the signal looks — which is where the reported ~45 seconds went (#78). Those photos are gone. The app identifies the car from each one's last odometer reading instead, which it was already sending as text and which is right essentially always. Measured on the same photo and a twelve-car garage: <strong>10.26 MB → 0.78 MB</strong>, input tokens 11,039 → 4,367, and about 3 seconds of upload on a slow connection instead of 41. The reading itself is unchanged — benchmarking found the photos made no difference to accuracy on two separate corpora.</li>
+  <li><strong>Odometer scanning is dramatically faster.</strong> Every scan was uploading a photo of every single car in your garage so the AI could match the dashboard by sight. With twelve cars that is <strong>10.26 MB</strong> per scan, and a phone's upload speed is a fraction of its download speed however strong the signal looks — which is where the reported ~45 seconds went (#78). Those photos are gone. The app identifies the car from each one's last odometer reading instead, which it was already sending as text and which is right essentially always. Measured on the same photo and a twelve-car garage: <strong>10.26 MB → 0.78 MB</strong>, input tokens 59,749 → 4,367, and about 3 seconds of upload on a slow connection instead of 41. The reading itself is unchanged — benchmarking found the photos made no difference to accuracy on two separate corpora.</li>
   <li><strong>A scan costs 2.3¢ instead of 30¢.</strong> Those reference photos were charged as image tokens — twelve of them at full size came to 59,749 input tokens per scan against 4,367 without, so at Opus 4.8's $5/MTok a scan cost <strong>13× more than it does now</strong>. Settings has always estimated "~2–3¢" for an Opus scan; that estimate is accurate for the first time. For a scan a day, $109/year becomes $8.</li>
   </ul>
   <h3 class="cat cat-added">Added</h3>
@@ -45,7 +45,7 @@
   <h2 id="v1-19-1">1.19.1 <span class="ver-date">2026-09-20</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>A mistyped odometer reading no longer skews a car's average MPG.</strong> The fuel-economy chart already ignored impossible figures so they wouldn't wreck it — but the average shown on the dashboard didn't, so a bad entry disappeared from the chart while still dragging the headline number. Worse, the chart looking normal made the average look trustworthy. On a four-fill history with one 10× typo the average read <strong>153 MPG instead of 30</strong>; the EV equivalent read <strong>1,398 MPGe instead of about 102</strong>. Both now ignore the same entries, from the same threshold. This does not yet *tell* you about a suspect entry — it's still silently excluded from both. That part is #72 and is waiting on a decision about a "filled the tank?" checkbox, which would prevent most of these at entry instead of flagging them afterwards.</li>
+  <li><strong>A mistyped odometer reading no longer skews a car's average MPG.</strong> The fuel-economy chart already ignored impossible figures so they wouldn't wreck it — but the average shown on the dashboard didn't, so a bad entry disappeared from the chart while still dragging the headline number. Worse, the chart looking normal made the average look trustworthy. On a four-fill history with one 10× typo the average read <strong>153 MPG instead of 30</strong>; the EV equivalent read <strong>1,398 MPGe instead of about 102</strong>. Both now ignore the same entries, from the same threshold. This does not yet <em>tell</em> you about a suspect entry — it's still silently excluded from both. That part is #72 and is waiting on a decision about a "filled the tank?" checkbox, which would prevent most of these at entry instead of flagging them afterwards.</li>
   </ul>
 </section>
 
@@ -53,7 +53,7 @@
   <h2 id="v1-19-0">1.19.0 <span class="ver-date">2026-09-20</span></h2>
   <h3 class="cat cat-changed">Changed</h3>
   <ul>
-  <li><strong>The per-car fuel-economy chart is now spaced by fill-up, not by date.</strong> Fill-ups are unevenly spaced in time — a fortnight of commuting, then six weeks parked — and on a date axis those gaps dominated the picture while consecutive fills were squeezed together and hard to compare. Economy is a property of a tank rather than of a week, so each fill now gets an equal slot, oldest first. The axis labels still show *when* each fill happened, so nothing about the timeline is lost.</li>
+  <li><strong>The per-car fuel-economy chart is now spaced by fill-up, not by date.</strong> Fill-ups are unevenly spaced in time — a fortnight of commuting, then six weeks parked — and on a date axis those gaps dominated the picture while consecutive fills were squeezed together and hard to compare. Economy is a property of a tank rather than of a week, so each fill now gets an equal slot, oldest first. The axis labels still show <em>when</em> each fill happened, so nothing about the timeline is lost.</li>
   </ul>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
@@ -65,7 +65,7 @@
   <h2 id="v1-18-0">1.18.0 <span class="ver-date">2026-09-20</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>A network blip can no longer produce a second, empty spreadsheet.</strong> On launch the app checks the workbook it remembers; that check treated *any* failure — a dropped connection, a Google outage, an expired token — the same as "the spreadsheet was deleted", and then went looking for one. Because Drive's file search is also eventually consistent and can briefly not list a file that exists, the two together could end in the app creating a fresh empty workbook while your real one sat in Drive. That presents as every car and every entry having vanished. Now only a genuine "not found" justifies making one, anything else is reported so you can retry, and an empty search is confirmed a second time before creating.</li>
+  <li><strong>A network blip can no longer produce a second, empty spreadsheet.</strong> On launch the app checks the workbook it remembers; that check treated <em>any</em> failure — a dropped connection, a Google outage, an expired token — the same as "the spreadsheet was deleted", and then went looking for one. Because Drive's file search is also eventually consistent and can briefly not list a file that exists, the two together could end in the app creating a fresh empty workbook while your real one sat in Drive. That presents as every car and every entry having vanished. Now only a genuine "not found" justifies making one, anything else is reported so you can retry, and an empty search is confirmed a second time before creating.</li>
   <li><strong>Entries with no odometer reading no longer show "0 mi".</strong> An insurance payment logged without a reading was displaying as made at zero miles; it now says "no reading", shown lighter rather than in a different colour.</li>
   <li><strong>A vehicle history document no longer tells the AI a car was bought at zero miles</strong> when the purchase odometer was never recorded — it says "not recorded" and asks it not to estimate annual mileage from the ownership period. Both facts were going into a document meant for a buyer.</li>
   </ul>
@@ -97,7 +97,7 @@
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
   <li><strong>A scan no longer refuses to fill in a reading just because the two readers disagree.</strong> The app cross-checks the AI against on-device recognition, and it was leaving the field empty whenever they differed — but the on-device reader is the weaker of the two, so it was vetoing perfectly good readings and making you retype them. Now it fills the field and tells you the other reading, and only withholds when something actually contradicts the number: the AI's own digit list not matching, or a reading with fewer digits than your last one.</li>
-  <li><strong>The digit-count check now uses the car you picked</strong>, not the car the scan guessed. Previously a correct low reading on a new car could be refused because a *different* car reads 128,456 — and the message quoted a number that car never had.</li>
+  <li><strong>The digit-count check now uses the car you picked</strong>, not the car the scan guessed. Previously a correct low reading on a new car could be refused because a <em>different</em> car reads 128,456 — and the message quoted a number that car never had.</li>
   <li><strong>Saving an entry no longer waits for the diagnostic upload.</strong> With "Keep my odometer scans" on, the entry sheet stayed open while two photos uploaded.</li>
   <li><strong>Kept scans work properly on-device.</strong> In local mode the photos were being written as unnamed files with no folder and no way to find or delete them, while Settings said otherwise. They now go to a real folder with real names, and Settings has a "Delete kept photos" button that actually works.</li>
   <li><strong>Kept scans record kilometres correctly.</strong> One field was being stored in miles while the rest were in your chosen unit, which made every kept sample wrong for anyone not using miles.</li>
@@ -115,7 +115,7 @@
   <h2 id="v1-16-0">1.16.0 <span class="ver-date">2026-09-20</span></h2>
   <h3 class="cat cat-added">Added</h3>
   <ul>
-  <li><strong>Settings → Improve Odometer Scanning.</strong> Off by default. Turn it on and each odometer photo you scan is kept in a “Scan Review” folder in your own Google Drive (or on the device in local mode), together with what the app read and what you actually saved. That gives the scanning something real to be measured against instead of sample pictures — which is what the last round of fixes was missing. Photos go nowhere else, and you can delete the folder whenever you like; nothing in the app reads it back. It keeps the ones it got *right* as well as the ones you corrected. That sounds like clutter and isn't: without them, a change can look like an improvement while quietly breaking readings that already worked.</li>
+  <li><strong>Settings → Improve Odometer Scanning.</strong> Off by default. Turn it on and each odometer photo you scan is kept in a “Scan Review” folder in your own Google Drive (or on the device in local mode), together with what the app read and what you actually saved. That gives the scanning something real to be measured against instead of sample pictures — which is what the last round of fixes was missing. Photos go nowhere else, and you can delete the folder whenever you like; nothing in the app reads it back. It keeps the ones it got <em>right</em> as well as the ones you corrected. That sounds like clutter and isn't: without them, a change can look like an improvement while quietly breaking readings that already worked.</li>
   </ul>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
@@ -158,7 +158,7 @@
   <h3 class="cat cat-internal">Internal</h3>
   <ul>
   <li>Five architecture decisions recorded: ADR-035 (a queued write belongs to one account and one record), ADR-036 (read stored collections element by element), ADR-037 (delete the row before the file), ADR-038 (a dedup key names every meaningful field), ADR-039 (a spreadsheet date cell is a calendar day).</li>
-  <li>Tests 287 → 307. The Sheets test harness can now answer requests by URL, so a test about the *order* of requests can't pass or fail for the wrong reason.</li>
+  <li>Tests 287 → 307. The Sheets test harness can now answer requests by URL, so a test about the <em>order</em> of requests can't pass or fail for the wrong reason.</li>
   </ul>
 </section>
 
@@ -169,7 +169,7 @@
   <li><strong>A decimal odometer reading was ten times too high.</strong> Typing <code>12345.6</code> — a trip meter, a km reading, or what a photo scan returns — stored <code>123456</code>. The reading is what every mileage, MPG and cost-per-mile figure in the app is worked out from, so one entry threw off every chart, and the wrong number looked like real data rather than a mistake. Reminder due-mileage and repeat intervals had the same bug. All three now read the number you typed, including in locales that write <code>1250,5</code>.</li>
   <li><strong>An edit made while a change was still uploading could be thrown away.</strong> Renaming an entry that hadn't finished syncing showed as saved, then vanished when the earlier upload completed. The newer version now stays queued and goes out.</li>
   <li><strong>Fixing that could have duplicated an upload.</strong> A photo or document whose entry stayed queued would have been uploaded a second time, leaving an orphan file in your Drive. The app now remembers the file it already uploaded and reuses it.</li>
-  <li><strong>A future update could have discarded your unsynced changes.</strong> Reminders and to-dos were the two records whose stored form couldn't tolerate a new field being added. Because unsynced changes and the offline cache are both read leniently, one unreadable field would have silently dropped *the whole queue of changes waiting to sync* — the only copy of them — rather than one field. Both now read tolerantly, like every other record already did.</li>
+  <li><strong>A future update could have discarded your unsynced changes.</strong> Reminders and to-dos were the two records whose stored form couldn't tolerate a new field being added. Because unsynced changes and the offline cache are both read leniently, one unreadable field would have silently dropped <em>the whole queue of changes waiting to sync</em> — the only copy of them — rather than one field. Both now read tolerantly, like every other record already did.</li>
   <li><strong><code>nan</code> or <code>inf</code> no longer breaks a save.</strong> Both parse as real numbers in Swift, and neither can be written to JSON — so one in a cost, gallons or kWh field made the offline cache fail to save, with nothing shown in Google mode. Rejected now both when typed and when read from the spreadsheet, which is the likelier source: the sheet is a document you and the web version both edit.</li>
   </ul>
   <h3 class="cat cat-internal">Internal</h3>
@@ -184,8 +184,8 @@
   <h2 id="v1-12-0">1.12.0 <span class="ver-date">2026-09-16</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>A save could overwrite or delete the wrong record.</strong> Every write found its row by id and then wrote to that row *number*. If the web app, your Mac, or you editing the sheet by hand removed a row above it in the meantime, everything shifted up and the write landed on a different entry — an edit overwrote its neighbour, a delete removed the wrong one, and the duplicate that was left behind was hidden on the next read. Writes now re-check the row is still the right one immediately before touching it, and abandon the write rather than guess.</li>
-  <li><strong>A failed request could delete a second row.</strong> Deletes are sent as a POST, and any failed request was automatically retried — so if the server applied the delete and *then* failed, the retry deleted the next row down. No second device needed; one bad connection was enough. Requests that create or remove something are no longer retried.</li>
+  <li><strong>A save could overwrite or delete the wrong record.</strong> Every write found its row by id and then wrote to that row <em>number</em>. If the web app, your Mac, or you editing the sheet by hand removed a row above it in the meantime, everything shifted up and the write landed on a different entry — an edit overwrote its neighbour, a delete removed the wrong one, and the duplicate that was left behind was hidden on the next read. Writes now re-check the row is still the right one immediately before touching it, and abandon the write rather than guess.</li>
+  <li><strong>A failed request could delete a second row.</strong> Deletes are sent as a POST, and any failed request was automatically retried — so if the server applied the delete and <em>then</em> failed, the retry deleted the next row down. No second device needed; one bad connection was enough. Requests that create or remove something are no longer retried.</li>
   <li><strong>Moving your data to Google could wipe rows added elsewhere.</strong> The move cleared the existing spreadsheet first, including anything the web version had added that this device had never seen — under a dialog promising nothing would be deleted. It now checks first and refuses, telling you what it found.</li>
   <li><strong>A Google outage could throw away your offline edits.</strong> Edits made offline were dropped after five failed attempts, and a server error counted as an attempt — so a long outage deleted the very changes the queue exists to protect. Server errors and rate limits now keep their place in the queue.</li>
   <li><strong>An edit could bring back something you deleted.</strong> If you deleted a car or entry on the web and your phone had an unsent edit to it, the edit re-created it. The app now knows the difference between "this is new" and "this was deleted elsewhere".</li>
@@ -198,7 +198,7 @@
   <ul>
   <li><strong>Reminders to record an odometer reading (#33).</strong> Mileage is worked out between readings, so a gap between them leaves those months blank — and they can't be filled in afterwards. The app now notices when a car's last reading is older than an interval you choose (Settings → Odometer Readings; every 3 months by default), badges the car, lists the overdue ones, and sends a notification that opens straight into that car's entry sheet. Counted from each car's last reading, not a fixed date.
     <ul>
-      <li>This is deliberately about *readings*, not activity: the existing "no recent entry" badge was satisfied by a cost-only entry, so a car with monthly insurance and no reading for a year looked fine.</li>
+      <li>This is deliberately about <em>readings</em>, not activity: the existing "no recent entry" badge was satisfied by a cost-only entry, so a car with monthly insurance and no reading for a year looked fine.</li>
     </ul>
   </li>
   <li><strong>A real first-run screen (#11).</strong> It used to open on "Where Should Your Data Live?" and two buttons — asking you to decide before saying what the app does or why a spreadsheet is involved. Now it says what it's for, what each storage option means for you, and that the AI features are optional.</li>
@@ -245,7 +245,7 @@
   <h2 id="v1-9-1">1.9.1 <span class="ver-date">2026-09-15</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>Deleting something no longer loses it if you move your data.</strong> A file inside its 8-second Undo window was hidden from the app but not yet deleted — and starting a move to Google or to this device in that moment copied everything *except* that file, then destroyed the original. The record and the file were both gone, with Undo still on screen. Cancelling a pending delete now puts the row back first, and the Undo banner goes away with it.</li>
+  <li><strong>Deleting something no longer loses it if you move your data.</strong> A file inside its 8-second Undo window was hidden from the app but not yet deleted — and starting a move to Google or to this device in that moment copied everything <em>except</em> that file, then destroyed the original. The record and the file were both gone, with Undo still on screen. Cancelling a pending delete now puts the row back first, and the Undo banner goes away with it.</li>
   <li><strong>A corrupt local file no longer erases your garage.</strong> In on-device mode, a store file that couldn't be read was quietly replaced with an empty one on the next launch — no error, just an empty garage and nothing to recover from. The file is now left alone and the app tells you, so a backup can still restore it.</li>
   <li><strong>A move to Google can't destroy your spreadsheet half-way through.</strong> The destination was cleared before anything was uploaded, so a dropped connection during the upload left it permanently empty. Clearing now happens after the files are safely across.</li>
   <li><strong>Moving data from a store that failed to open is no longer offered.</strong> It would have cleared the destination and deleted the local copy while holding nothing to move.</li>
@@ -301,7 +301,7 @@
   <h2 id="v1-8-2">1.8.2 <span class="ver-date">2026-09-14</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>Chart text on the Mac is actually larger now.</strong> 1.8.1 shipped bigger Mac chart sizes that never applied, because the Mac test was <code>#if targetEnvironment(macCatalyst)</code> — a compile-time condition that is false in the iOS binary, and TestFlight hands the iOS binary to an Apple Silicon Mac ("iPad app on Mac"). The check is now <code>ProcessInfo.isMacCatalystApp</code>, which is true for a Mac Catalyst app *and* for the iOS app running on macOS, so it fires whichever build is installed. Sizes went up again as well, and the per-car bar chart's value axis was picking up the default size instead of the Mac one.</li>
+  <li><strong>Chart text on the Mac is actually larger now.</strong> 1.8.1 shipped bigger Mac chart sizes that never applied, because the Mac test was <code>#if targetEnvironment(macCatalyst)</code> — a compile-time condition that is false in the iOS binary, and TestFlight hands the iOS binary to an Apple Silicon Mac ("iPad app on Mac"). The check is now <code>ProcessInfo.isMacCatalystApp</code>, which is true for a Mac Catalyst app <em>and</em> for the iOS app running on macOS, so it fires whichever build is installed. Sizes went up again as well, and the per-car bar chart's value axis was picking up the default size instead of the Mac one.</li>
   </ul>
 </section>
 
@@ -566,7 +566,7 @@
   <h2 id="v0-37-1">0.37.1 <span class="ver-date">2026-07-18</span></h2>
   <h3 class="cat cat-fixed">Fixed</h3>
   <ul>
-  <li><strong>Copying the PDF report finally pastes.</strong> The share sheet's Copy now puts a named PDF *file* on the clipboard — the same thing the Files app's Copy produces — so pasting into Messages, Mail, or Files attaches the report. (The previous fix copied typed PDF bytes, which most apps ignore on paste; that's why Copy still appeared to do nothing.)</li>
+  <li><strong>Copying the PDF report finally pastes.</strong> The share sheet's Copy now puts a named PDF <em>file</em> on the clipboard — the same thing the Files app's Copy produces — so pasting into Messages, Mail, or Files attaches the report. (The previous fix copied typed PDF bytes, which most apps ignore on paste; that's why Copy still appeared to do nothing.)</li>
   </ul>
 </section>
 
@@ -583,7 +583,7 @@
   <li><strong>Garage rows no longer wrap.</strong> With the to-do counter and badges in the row there wasn't width for longer names, which wrapped onto extra lines. The name and odometer use a slightly smaller font and names stay on one line (truncating if very long).</li>
   <li><strong>Car page toolbar overlap.</strong> The car's PDF-export button overlapped the Edit button; it now sits on the left edge of the navigation bar, in the same spot as the whole-garage export button.</li>
   <li><strong>Dashboard summary cards.</strong> Long amounts (e.g. $19,930) in the Spent card no longer wrap — the value shrinks to fit on one line. The Cars card now opens the Garage tab when tapped, and the Due soon card jumps to the reminders list further down the dashboard.</li>
-  <li><strong>Fuel $ chart crash.</strong> The fuel-price chart colored each dot by the car name *stored on the transaction*, while its color scale was pinned to *current* car names — so any fill logged before a car was renamed (or a hand-edited name) crashed the chart the moment it appeared, every time. Dots now resolve the car by its stable id and always use the live name; fills whose car no longer exists are dropped. (Reproduced against the chart framework and covered by regression tests; the other charts already derived names from live cars and were never affected.)</li>
+  <li><strong>Fuel $ chart crash.</strong> The fuel-price chart colored each dot by the car name <em>stored on the transaction</em>, while its color scale was pinned to <em>current</em> car names — so any fill logged before a car was renamed (or a hand-edited name) crashed the chart the moment it appeared, every time. Dots now resolve the car by its stable id and always use the live name; fills whose car no longer exists are dropped. (Reproduced against the chart framework and covered by regression tests; the other charts already derived names from live cars and were never affected.)</li>
   </ul>
 </section>
 

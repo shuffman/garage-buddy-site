@@ -11,7 +11,7 @@ There is no markdown library on this machine and adding a dependency for one
 page isn't worth it, so this handles exactly the subset the changelog uses:
 `## [version] - date` headings, `### Category` subheadings, `-` bullets with
 two-space-indented continuation lines, nested `  -` bullets, `**bold**`,
-`` `code` `` and `[text](url)`. Anything else passes through escaped.
+`` `code` ``, `*italic*` and `[text](url)`. Anything else passes through escaped.
 """
 import argparse, html, os, re, sys
 
@@ -44,6 +44,11 @@ def inline(text):
     out = html.escape(text, quote=False)
     out = re.sub(r"`([^`]+)`", r"<code>\1</code>", out)
     out = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", out)
+    # Single asterisks AFTER bold, never before: by this point `**x**` is
+    # already <strong>, so every asterisk left is an italic delimiter. The
+    # changelog had 16 of these rendering as literal asterisks on the live
+    # page — "a photo of *every* car" — because only bold was handled.
+    out = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", out)
     out = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r'<a href="\2">\1</a>', out)
     return out
 
