@@ -19,9 +19,17 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.20.0</strong> &middot; 2026-09-22</p>
+<p class="tagline">Current version <strong>1.20.1</strong> &middot; 2026-09-22</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-20-1">1.20.1 <span class="ver-date">2026-09-22</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>The scan no longer freezes the screen while it prepares the photo.</strong> Rendering and encoding a 12-megapixel camera frame was happening on the main thread, so for 80ms or more nothing could redraw — including the progress spinner that is meant to show the scan is working (#80). Measured stall: 80ms before, under 25ms after, and that is on a fast Mac; a phone was worse. The scan takes the same time; it stops looking stuck while it happens.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-20-0">1.20.0 <span class="ver-date">2026-09-22</span></h2>
