@@ -68,8 +68,6 @@ app works fine without them.</p>
   <li><strong>Starting mileage</strong> — the odometer reading when you got
   the car. This matters for used cars, since miles are counted from here.</li>
   <li>Date acquired and purchase price</li>
-  <li>A <strong>reference photo</strong> of the dashboard or interior, which
-  helps AI scans work out which car a photo belongs to</li>
   <li>Your own estimate of what it's worth (see <a href="#value">Garage
   value</a>)</li>
 </ul>
@@ -143,9 +141,10 @@ zooming first took the reading from wrong every time to right every time.</p>
   52,500, not the one at 10,000.</li>
   <li><strong>AI</strong> <span class="tag">AI key</span> handles harder
   photos: glare, odd angles, and the seven-segment digital displays that trip
-  up ordinary text recognition. It identifies the car from your reference
-  photos, the dashboard style and whether the mileage is plausible. The
-  on-device reader runs alongside as a cross-check.</li>
+  up ordinary text recognition. It picks the car the same way — by which car's
+  last reading the number fits — so a scan costs one small upload rather than
+  a photo of every car in your garage. The on-device reader runs alongside as
+  a cross-check.</li>
 </ul>
 
 <h3 id="when-it-wont-fill-it-in">When it won't fill the number in</h3>
