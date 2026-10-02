@@ -19,9 +19,32 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.20.3</strong> &middot; 2026-10-01</p>
+<p class="tagline">Current version <strong>1.20.4</strong> &middot; 2026-10-01</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-20-4">1.20.4 <span class="ver-date">2026-10-01</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Undo can be tapped again.</strong> The banner after deleting a photo or document let taps fall through to the screen underneath, so Undo did nothing and the file was deleted anyway.</li>
+  <li><strong>Edits no longer vanish during a background refresh.</strong> A change made while the app was re-reading the spreadsheet could be replaced by the older copy, and a later save could write the old value back.</li>
+  <li><strong>Signing in as a different account no longer mixes in the old account's unsent changes.</strong> They stay held for their own account.</li>
+  <li><strong>Your own spreadsheet columns are left alone.</strong> Saving a row used to rewrite every extra column you had added, turning formulas into fixed values. The app now writes only its own columns.</li>
+  <li><strong>Editing a reminder or to-do deleted on another device no longer brings it back</strong>, and the app now says the edit couldn't be applied.</li>
+  <li><strong>Deleting a photo while it is still uploading keeps it deleted.</strong></li>
+  <li><strong>Odometer cells typed by hand as <code>12345.6</code> or with spaces are read correctly</strong> instead of as 0, which a later save then wrote back.</li>
+  <li><strong>A save refused during a data move keeps the form open</strong> instead of closing it and losing what you typed.</li>
+  <li><strong>A value estimate that arrives while the car form is open is no longer undone by saving the form.</strong></li>
+  <li><strong>Mileage charts ignore impossible jumps.</strong> An interval implying more than 1,000 miles a day — usually a mistyped starting mileage — is left out of the monthly totals and the current-month estimate, and estimates no longer reach back more than 60 days. The Fleet Report's miles now match the Dashboard's.</li>
+  <li><strong>No false "possible typo" warning</strong> for two readings on the same day logged out of order.</li>
+  <li><strong>A reminder due today shows as due, not overdue.</strong> Completing a mileage reminder always advances its mileage, and a repeat interval of 0 no longer claims to repeat.</li>
+  <li><strong>Odometer reading reminders are scheduled ahead of time</strong> and rescheduled when you log a reading; turning them off cancels a pending one.</li>
+  <li><strong>Cost per mile waits for 500 miles</strong> instead of showing $400/mi on a new car.</li>
+  <li><strong>Scanning:</strong> a reading ten times the last one (a tenths digit read as a whole digit) is no longer trusted; with no mileage on record the odometer beats the trip meter; a misread VIN is rejected instead of replacing the real one; scanned fuel volumes are entered in your locale's number format, so 45.678 L no longer becomes 45,678.</li>
+  <li><strong>Widgets count only active cars</strong> in this month's miles, and a reminder that passes its due date shows as overdue.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-20-3">1.20.3 <span class="ver-date">2026-10-01</span></h2>
