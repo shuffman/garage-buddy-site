@@ -19,9 +19,19 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.20.4</strong> &middot; 2026-10-01</p>
+<p class="tagline">Current version <strong>1.20.5</strong> &middot; 2026-10-05</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-20-5">1.20.5 <span class="ver-date">2026-10-05</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>Renaming a document can no longer rename the one next to it.</strong> If another device deleted a document just above it at the same moment, the new name (or the "before I owned it" flag) could land on the neighbouring document. The app now re-checks the row before writing, and tells you if the document was deleted elsewhere.</li>
+  <li><strong>Costs typed by hand with a leading or trailing space are read correctly</strong> instead of as no cost, which the next save of that entry then erased.</li>
+  <li><strong>Starting mileage is entered in your distance unit.</strong> With kilometers selected, the number was stored as miles. The field now shows km or mi, converts on save, accepts the same number formats as the odometer field, and no longer needs Return to take the value.</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-20-4">1.20.4 <span class="ver-date">2026-10-01</span></h2>
