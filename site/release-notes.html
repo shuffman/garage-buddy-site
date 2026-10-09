@@ -19,9 +19,26 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.21.1</strong> &middot; 2026-10-08</p>
+<p class="tagline">Current version <strong>1.21.2</strong> &middot; 2026-10-09</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-21-2">1.21.2 <span class="ver-date">2026-10-09</span></h2>
+  <h3 class="cat cat-fixed">Fixed</h3>
+  <ul>
+  <li><strong>"Add This iPhone's Data to the Sheet" no longer overwrites the sheet.</strong> It now adds only what the sheet doesn't already have. Before, a car, entry or document that both had was replaced with the iPhone's copy, undoing edits made on the web or another device, and documents the sheet already had were uploaded again as duplicate files.</li>
+  <li><strong>A move or merge to Google that fails partway no longer leaves documents pointing at deleted files.</strong></li>
+  <li><strong>Background sync can't get stuck after reconnecting.</strong> If Google access had been revoked earlier, connecting from on-device mode could leave the app at "Syncing" and stop it refreshing.</li>
+  <li><strong>Starting Connect Google Sheets no longer undoes a delete</strong> that was still in its Undo window.</li>
+  <li><strong>"Use the Google Sheet" won't discard more than it said.</strong> If the iPhone's data changed while the choice was on screen, it asks again.</li>
+  <li>Clearer message when a connect is blocked by changes still waiting to save.</li>
+  <li><strong>Dates, categories and numbers typed into the spreadsheet in a form the app can't read are no longer overwritten.</strong> Saving anything else on that row used to replace them with today's date, "Other", or a blank (#99).</li>
+  <li><strong>A save retried after a Google server error can't land on the wrong row</strong> if another device deleted a row in the meantime (#43).</li>
+  <li><strong>Disconnect asks first</strong>, and says how many unsynced changes and photos it would delete. It used to be one tap, even while changes were waiting to sync (#62).</li>
+  <li><strong>If the app can't save your queued changes to the iPhone's storage, it says so</strong> instead of carrying on silently (#101).</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-21-1">1.21.1 <span class="ver-date">2026-10-08</span></h2>
