@@ -19,9 +19,25 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.23.0</strong> &middot; 2026-10-18</p>
+<p class="tagline">Current version <strong>1.24.0</strong> &middot; 2026-10-21</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-24-0">1.24.0 <span class="ver-date">2026-10-21</span></h2>
+  <h3 class="cat cat-added">Added</h3>
+  <ul>
+  <li><strong>The garage shows when each car's odometer was last read</strong>, as a date (YYYY-MM-DD) under the mileage, which now has its unit on the same line. It's the date of the newest entry with a reading; a car with none shows no date (#106).</li>
+  <li><strong>"Filled the tank" on gas entries.</strong> Turn it off for a top-up: the gallons are added to the next full fill instead of producing a fuel economy figure of their own, which was usually far too high (#72).</li>
+  <li><strong>A fill whose fuel economy can't be right is now marked</strong> instead of quietly left out. The entry shows a warning triangle and the figure (for example "241.7 MPG — left out of averages") in the car's history and in Recent Activity, and opening it says what to check (#72).</li>
+  </ul>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>Three doc comments sat on the wrong declaration: two were separated from their function by a <code>#if DEBUG</code> block (<code>replayJournal</code>, <code>useSpreadsheetForTesting</code>), and one had a new function inserted under it (<code>refreshNotifications</code>). <code>SourceLintTests</code> now fails the suite when a <code>///</code> line sits directly above <code>#if</code>/<code>#else</code>/<code>#endif</code>, the pattern behind all three earlier occurrences (#70).</li>
+  <li>AppModel takes its Google session (<code>AuthSession</code>) and spreadsheet store (<code>StoreFactory</code>) from outside, so connect and both migrations now have tests: <code>ConnectMigrationTests</code>, 11 cases, including the failure cleanup and sign-in flag fixes from 1.21.2 that had none (#102, first part). Tests 452 → 465.</li>
+  <li>ADR-009, ADR-016 and ADR-018 corrected where they still claimed more than the code does (#71). ADR-009: a row removed above the target during the one request between the re-check and the write still misdirects it. ADR-016: attachments have been journalled since #53. ADR-018: the move to Google is listed in its real order (upload, refuse, clear, append), and "abort-safe" now says it protects the device copy, not the sheet (#97).</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-23-0">1.23.0 <span class="ver-date">2026-10-18</span></h2>
