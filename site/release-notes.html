@@ -19,9 +19,17 @@
 </nav>
 
 <h1>Release Notes</h1>
-<p class="tagline">Current version <strong>1.24.1</strong> &middot; 2026-10-21</p>
+<p class="tagline">Current version <strong>1.24.2</strong> &middot; 2026-10-22</p>
 
 <p class="lede">Everything that changed in Garage Buddy, newest first.</p>
+
+<section class="release">
+  <h2 id="v1-24-2">1.24.2 <span class="ver-date">2026-10-22</span></h2>
+  <h3 class="cat cat-internal">Internal</h3>
+  <ul>
+  <li>Car photo thumbnails size their decode from the scale of the display they're on, not <code>UIScreen.main</code>, which is ambiguous on iPhone Duo's two displays and which Apple says will be deprecated (#107).</li>
+  </ul>
+</section>
 
 <section class="release">
   <h2 id="v1-24-1">1.24.1 <span class="ver-date">2026-10-21</span></h2>
